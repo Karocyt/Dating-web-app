@@ -6,8 +6,12 @@ from .. import db
 from ..utils import Validator
 
 class User():
-    __fields__ = ("id", "first_name", "last_name", "email", "password", "sex", "orientation", "bio", "views_count", "likes_count", "picture_1", "picture_2", "picture_3", "picture_4", "picture_5", "validated")
-    __restricted_fields__ = ("id", "validated", "views_count", "likes_count", "id")
+    __fields__ = (
+        "id", "first_name", "last_name", "email", "password", "sex",
+        "orientation", "bio", "views_count", "likes_count",
+        "picture_1", "picture_2", "picture_3", "picture_4", "picture_5",
+        "validated", "last_seen", "age", "lat", "lon")
+    __restricted_fields__ = ("id", "validated", "views_count", "likes_count", "id", "last_seen")
 
     def list_users(self):
         query = """
