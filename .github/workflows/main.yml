@@ -24,4 +24,4 @@ jobs:
       - name: Run a multi-line script
         run: |
           apk add docker docker-compose
-          docker-compose up --exit-code-from test_back
+          docker-compose up --exit-code-from tests_back
