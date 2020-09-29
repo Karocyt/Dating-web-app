@@ -20,7 +20,8 @@ def user_required(fun):
         if not found:
             return error("Votre compte a été supprimé", 403)
         delattr(found, "password")
-        found.update({"last_seen": datetime.date.today().isoformat()}, force=True)
+        print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"),flush=True)
+        found.update({"last_seen": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")}, force=True)
         return fun(*args, **kwargs, user=found)
 
     if type(fun) is not types.FunctionType:
