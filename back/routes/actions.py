@@ -63,4 +63,6 @@ def user_profile(user_id, user):
     found = User.get_user(user_id=user_id)
     if not found or user.id in found.blocklist:
         return error("Utilisateur introuvable", 404)
+    if user.id != found.id:
+        user.visit(found)
     return success(found.public_as(user))

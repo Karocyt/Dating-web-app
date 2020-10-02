@@ -1,4 +1,4 @@
-import mariadb
+import mariadb, datetime
 from flask import jsonify
 from werkzeug.security import check_password_hash
 
@@ -165,6 +165,10 @@ class User():
         self.clear_reports()
         self.clear_blocks()
         self.clear_likes()
+        query = "DELETE FROM validations WHERE user_id=" + str(self.id)
+        db.exec(query)
+        query = "DELETE FROM visits WHERE user_id=? or visited=?"
+        db.exec(query, (self.id, self.id))
         query = "DELETE FROM users WHERE id=" + str(self.id)
         db.exec(query)
         return True
@@ -189,6 +193,19 @@ class User():
             return False
         query = "INSERT INTO reports (user_id, reported) VALUES (?, ?)"
         db.exec(query, (self.id, user.id))
+        return True
+
+    def visit(self, user):
+        query = "SELECT * FROM visits WHERE user_id=? AND visited=?"
+        db.exec(query, (self.id, user.id))
+
+        rows = db.cur.fetchall()
+        if len(rows) is not 0:
+            query = "UPDATE visits SET date=? WHERE user_id=? AND visited=?"
+            db.exec(query, (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"), self.id, user.id))
+        else:
+            query = "INSERT INTO visits (user_id, visited) VALUES (?, ?)"
+            db.exec(query, (self.id, user.id))
         return True
 
     def unlike(self, user):
@@ -272,6 +289,22 @@ class User():
             INNER JOIN likes
             ON users.id = likes.user_id
                 AND likes.liked = ?
+            """
+        db.exec(query, (self.id,))
+
+        rows = db.cur.fetchall()
+        return [User.build_from_db_tuple(t).public_as(self) for t in rows]
+    
+    @property
+    def visits_list(self):
+        query = """
+            SELECT
+                u.*
+            FROM users u
+            INNER JOIN visits v
+            ON u.id = v.user_id
+                AND v.visited = ?
+            ORDER BY v.date DESC;
             """
         db.exec(query, (self.id,))
 
