@@ -157,15 +157,16 @@ class User():
         return True
 
     def delete(self):
-        query = "DELETE FROM likes WHERE user_id=? OR liked=?"
-        db.exec(query, (self.id, self.id))
-        query = "DELETE FROM blocks WHERE user_id=? OR blocked=?"
-        db.exec(query, (self.id, self.id))
-        query = "DELETE FROM users WHERE id=" + str(self.id)
-        db.exec(query)
+        # query = "DELETE FROM likes WHERE user_id=? OR liked=?"
+        # db.exec(query, (self.id, self.id))
+        # query = "DELETE FROM blocks WHERE user_id=? OR blocked=?"
+        # db.exec(query, (self.id, self.id))
         self.clear_resets()
+        self.clear_reports()
         self.clear_blocks()
         self.clear_likes()
+        query = "DELETE FROM users WHERE id=" + str(self.id)
+        db.exec(query)
         return True
 
     def like(self, user):
@@ -176,6 +177,17 @@ class User():
         if len(rows) is not 0:
             return False
         query = "INSERT INTO likes (user_id, liked) VALUES (?, ?)"
+        db.exec(query, (self.id, user.id))
+        return True
+
+    def report(self, user):
+        query = "SELECT * FROM reports WHERE user_id=? AND reported=?"
+        db.exec(query, (self.id, user.id))
+
+        rows = db.cur.fetchall()
+        if len(rows) is not 0:
+            return False
+        query = "INSERT INTO reports (user_id, reported) VALUES (?, ?)"
         db.exec(query, (self.id, user.id))
         return True
 
@@ -325,6 +337,10 @@ class User():
 
     def clear_resets(self):
         query = "DELETE from resets WHERE user_id=?"
+        db.exec(query, (self.id,))
+
+    def clear_reports(self):
+        query = "DELETE from reports WHERE user_id=?"
         db.exec(query, (self.id,))
 
     def clear_blocks(self):

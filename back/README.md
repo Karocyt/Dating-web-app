@@ -296,8 +296,8 @@ Content-Type: application/json
 ```
 
 ## Actions
-**You send:**  Your `session` cookie and the json encoded action (`like` or `block`) with it's boolean setting.  
-**You get:** The full JSON encoded profile of the connected user.
+**You send:**  Your `session` cookie and the json encoded action (`like`, `block` or `report`) with its boolean setting.  
+**You get:** The match status with the user.
 
 **Request:**
 ```json

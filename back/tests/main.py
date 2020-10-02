@@ -263,6 +263,13 @@ def test_last_seen():
     logout(user1)
     logout(user2)
 
+def test_report():
+    login(user1)
+    response = report(user1, user2)
+    assert response.status_code == 200
+    response = report(user1, user2)
+    assert response.status_code == 400
+
 def test_delete():
     login(user1)
     response = delete(user1)
