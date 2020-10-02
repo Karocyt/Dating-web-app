@@ -12,7 +12,7 @@ class User():
         "picture_1", "picture_2", "picture_3", "picture_4", "picture_5",
         "validated", "banned", "last_seen", "age", "lat", "lon")
     __restricted_fields__ = ("id", "validated", "views_count", "likes_count", "last_seen")
-    __private_fields__ = ("last_seen")
+    __private_fields__ = ("last_seen", "banned")
 
     def list_users(self):
         query = """
@@ -38,7 +38,7 @@ class User():
         db.exec(query, (self.id, self.id, self.id))
 
         rows = db.cur.fetchall()
-        return [User.build_from_db_tuple(t).public_as(self) for t in rows]
+        return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
 
     @staticmethod
     def build_from_db_tuple(values):
@@ -201,9 +201,9 @@ class User():
         query = "SELECT COUNT(*) FROM visits WHERE visited=?"
         db.exec(query, (user.id,))
         rows = db.cur.fetchall()
-        visits = 1
         if len(rows) is not 0:
             visits = float(rows[0][0])
+        visits = max(1.0, visits)
 
         query = "SELECT COUNT(*) FROM reports WHERE reported=?"
         db.exec(query, (user.id,))
@@ -300,7 +300,7 @@ class User():
         db.exec(query, (self.id,))
 
         rows = db.cur.fetchall()
-        return [User.build_from_db_tuple(t).public_as(self) for t in rows]
+        return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
     
     @property
     def liked_by_list(self):
@@ -315,7 +315,7 @@ class User():
         db.exec(query, (self.id,))
 
         rows = db.cur.fetchall()
-        return [User.build_from_db_tuple(t).public_as(self) for t in rows]
+        return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
     
     @property
     def visits_list(self):
@@ -331,7 +331,7 @@ class User():
         db.exec(query, (self.id,))
 
         rows = db.cur.fetchall()
-        return [User.build_from_db_tuple(t).public_as(self) for t in rows]
+        return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
 
     @property
     def blocked_by(self):
@@ -361,6 +361,13 @@ class User():
         d["blocked"] = self.id in user.blocklist 
         return d
 
+    def intro_as(self, user):
+        d = self.intro
+        d["liked"] = user.liked(self)
+        d["matches"] = user.matches_with(self)
+        d["blocked"] = self.id in user.blocklist 
+        return d
+
     @property
     def public(self):
         return {
@@ -368,11 +375,23 @@ class User():
             "id": self.id,
             "pictures": self.pictures,
             "orientation": self.orientation,
-            "bio": "",
+            "bio": self.bio,
+            "age": self.age,
             "score": self.score,
             "sex": self.sex,
             "lon": self.lon,
             "lat": self.lat,
+            "last_seen": self.last_seen
+        }
+
+    @property
+    def intro(self):
+        return {
+            "first_name": self.first_name,
+            "id": self.id,
+            "pictures": self.pictures,
+            "age": self.age,
+            "sex": self.sex,
             "last_seen": self.last_seen
         }
 
@@ -395,8 +414,8 @@ class User():
         db.exec(query, (self.id,))
 
     def clear_reports(self):
-        query = "DELETE from reports WHERE user_id=?"
-        db.exec(query, (self.id,))
+        query = "DELETE from reports WHERE user_id=? OR reported=?"
+        db.exec(query, (self.id, self.id))
 
     def clear_blocks(self):
         query = "DELETE from blocks WHERE user_id=? or blocked=?"

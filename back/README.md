@@ -333,35 +333,23 @@ Content-Type: application/json
 {
     "matches": [
         {
-            "bio": "J'aime manger des pommes",
             "blocked": false,
             "first_name": "roger",
             "id": 2,
             "liked": true,
             "matches": true,
-            "orientation": "heterosexual",
             "pictures": [],
-            "score": 42.101,
-            "sex": "m",
             "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
-            "lon": 45.454646545,
-            "lat": 12.135456464,
             "age": 21
         },
         {
-            "bio": "Je pète au lit",
             "blocked": false,
             "first_name": "bertrand",
             "id": 7,
             "liked": true,
             "matches": true,
-            "orientation": "bisexual",
             "pictures": [],
-            "score": 101.42,
-            "sex": "m",
             "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
-            "lon": 45.454646545,
-            "lat": 12.135456464,
             "age": 21
         }
     ],
@@ -384,42 +372,30 @@ Content-Type: application/json
 {
     "users": [
         {
-            "bio": "J'aime manger des pommes",
             "blocked": false,
             "first_name": "roger",
             "id": 2,
             "liked": true,
             "matches": true,
-            "orientation": "heterosexual",
             "pictures": [],
-            "score": 42.101,
-            "sex": "m",
             "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
-            "lon": 45.454646545,
-            "lat": 12.135456464,
             "age": 21
         },
         {
-            "bio": "Je pète au lit",
             "blocked": false,
             "first_name": "bertrand",
             "id": 7,
             "liked": false,
             "matches": false,
-            "orientation": "bisexual",
             "pictures": [],
-            "score": 101.42,
-            "sex": "m",
             "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
-            "lon": 45.454646545,
-            "lat": 12.135456464,
             "age": 21
         }
     ],
 }
 ```
 
-## List users # TO FINISH (parameters)
+## Visits
 
 **You send:**  Your `session` cookie and optional search parameters.  
 **You get:** A list of users who visited you, sorted by last visit date
@@ -457,35 +433,25 @@ Content-Type: application/json
 {
     "users":  [
         {
-            "bio": "J'aime manger des pommes",
             "blocked": false,
             "first_name": "roger",
             "id": 2,
             "liked": true,
             "matches": false,
-            "orientation": "heterosexual",
             "pictures": [],
-            "score": 0,
             "sex": "m",
             "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
-            "lon": 45.454646545,
-            "lat": 12.135456464,
             "age": 21
         },
         {
-            "bio": "Je pète au lit",
             "blocked": false,
             "first_name": "bertrand",
             "id": 7,
             "liked": false,
             "matches": false,
-            "orientation": "bisexual",
             "pictures": [],
-            "score": 0,
             "sex": "m",
             "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
-            "lon": 45.454646545,
-            "lat": 12.135456464,
             "age": 21
         }
     ],
@@ -514,35 +480,25 @@ Content-Type: application/json
 {
     "users":  [
         {
-            "bio": "J'aime manger des pommes",
             "blocked": false,
             "first_name": "roger",
             "id": 2,
             "liked": true,
             "matches": false,
-            "orientation": "heterosexual",
             "pictures": [],
-            "score": 0,
             "sex": "m",
             "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
-            "lon": 45.454646545,
-            "lat": 12.135456464,
             "age": 21
         },
         {
-            "bio": "Je pète au lit",
             "blocked": false,
             "first_name": "bertrand",
             "id": 7,
             "liked": false,
             "matches": false,
-            "orientation": "bisexual",
             "pictures": [],
-            "score": 0,
             "sex": "m",
             "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
-            "lon": 45.454646545,
-            "lat": 12.135456464,
             "age": 21
         }
     ],

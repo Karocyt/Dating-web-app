@@ -265,10 +265,19 @@ def test_last_seen():
 
 def test_report():
     login(user1)
-    response = report(user1, user2)
+    delete(user1)
+    create(user1)
+    login(user1)
+    response = update(user1, {"pictures": ["/test123", "456"]})
     assert response.status_code == 200
-    response = report(user1, user2)
+    login(user1)
+    login(user2)
+    response = report(user2, user1)
+    assert response.status_code == 200
+    response = report(user2, user1)
     assert response.status_code == 400
+    response = like(user1, user2)
+    assert response.status_code == 403
 
 def test_delete():
     login(user1)
