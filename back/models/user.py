@@ -129,7 +129,7 @@ class User():
 
         for k in new_values.keys():
             if k not in User.__fields__ or (k in User.__restricted_fields__ and not force):
-                raise Exception(f"field {k} doesn't exist")
+                raise KeyError(f"field {k} doesn't exist")
             reqs += [f"{k}=?"]
         req = ", ".join(reqs)
         query = "UPDATE users SET " + req + " WHERE id=" + str(self.id)

@@ -63,6 +63,15 @@ def test_content():
     delete(tmp)
     logout(tmp)
 
+def test_key_error():
+    login(user1)
+    import copy
+    tmp = copy.deepcopy(user1)
+    del tmp["session"]
+    r = update(user1, tmp)
+    assert r.status_code == 400
+    logout(user1)
+
 def test_recreate():
     response = signup(user1)
     assert response.status_code == 409

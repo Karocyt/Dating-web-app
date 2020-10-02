@@ -104,6 +104,10 @@ def catcher(fun):
             return fun(*args, **kwargs)
         except InvalidData as e:
             return error(f"{e}", 400)
+        except KeyError as e:
+            return error(f"{e}", 400)
+        # except Exception as e:
+        #     return error(f"This is not supposed to happen: {e}", 418)
 
     if type(fun) is not types.FunctionType:
         raise ValueError()
