@@ -160,10 +160,6 @@ class User():
         return True
 
     def delete(self):
-        # query = "DELETE FROM likes WHERE user_id=? OR liked=?"
-        # db.exec(query, (self.id, self.id))
-        # query = "DELETE FROM blocks WHERE user_id=? OR blocked=?"
-        # db.exec(query, (self.id, self.id))
         self.clear_resets()
         self.clear_reports()
         self.clear_blocks()
