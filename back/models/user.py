@@ -14,7 +14,7 @@ class User():
     __restricted_fields__ = ("id", "validated", "views_count", "likes_count", "last_seen")
     __private_fields__ = ("last_seen", "banned")
 
-    def list_users(self):
+    def list_users(self, full=False):
         query = """
             SELECT
                 *
@@ -38,6 +38,8 @@ class User():
         db.exec(query, (self.id, self.id, self.id))
 
         rows = db.cur.fetchall()
+        if full:
+            return [User.build_from_db_tuple(t) for t in rows]
         return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
 
     @staticmethod
