@@ -155,13 +155,32 @@ class Schema:
 
         self.cur.execute(query)
 
-    def populate_users_table(self):
+    def create_tags_table(self):
+
         query = """
-        INSERT INTO users (first_name, last_name, email, password) VALUES
-        ('Toto', 'gjhh', 'gdssgs', 'sgsssg'),
-        ('Jack', 'gjgh', 'gdsss', 'ssssgd'),
-        ('Titi', 'ghgh', 'gssgs', 'sgsssd');
+        CREATE TABLE IF NOT EXISTS blocks (
+        id int NOT NULL,
+        name varchar(100) NOT NULL,
+        
+        PRIMARY KEY (name),
+        ) ENGINE=InnoDB;
         """
+
+        self.cur.execute(query)
+
+    def create_user_tags_table(self):
+
+        query = """
+        CREATE TABLE IF NOT EXISTS user_tags (
+        user_id int NOT NULL,
+        tag int NOT NULL,
+        
+        PRIMARY KEY (user_id, tag),
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (tag) REFERENCES tags(id)
+        ) ENGINE=InnoDB;
+        """
+
         self.cur.execute(query)
 
     @retry(retry_on_exception=retry_on_db_error, wait_fixed=1000, stop_max_attempt_number=3)
