@@ -331,7 +331,7 @@ Cookie: session=eyJfcGVybWFuZW50Ijp0cnVlLCJ1c2VyIjoxfQ.X1Uwog.BBHCto1CAuJj_9RLJ0
 HTTP/1.1 200 OK
 Content-Type: application/json
 {
-    "matches": [
+    "users": [
         {
             "blocked": false,
             "first_name": "roger",
