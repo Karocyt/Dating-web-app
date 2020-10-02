@@ -52,9 +52,9 @@ class Schema:
         validated tinyint DEFAULT 0 NOT NULL,
         banned tinyint DEFAULT 0 NOT NULL,
         last_seen timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        age int DEFAULT NULL,
-        lat float DEFAULT NULL,
-        lon float DEFAULT NULL,
+        age int DEFAULT 18 NOT NULL,
+        lat float DEFAULT 0 NOT NULL,
+        lon float DEFAULT 0 NOT NULL,
         PRIMARY KEY (id)
         ) ENGINE=InnoDB;
         """
