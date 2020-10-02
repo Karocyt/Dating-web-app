@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
 //import { useSelector, useDispatch } from 'react-redux';
-
 type Props = {
     login: (email:String, password:String) => void;
     signup: (
@@ -20,6 +19,7 @@ const Home: FunctionComponent<Props> = ({login, signup}) => {
     const [signupFirstname, setSignupFirstname] = useState('');
     const [signupLastname, setSignupLastname] = useState('');
     const [signupPassword, setSignupPassword] = useState('');
+    //(mail', 'test2@gmail.com') ('password', 'blabla234567')
   return (
     <div>
         <br/>
@@ -135,6 +135,8 @@ const Home: FunctionComponent<Props> = ({login, signup}) => {
                                     <div className="col">
                                         <input type="text" className="form-control" placeholder="Retapper le mot de passe" name="lastPassword"/>
                                     </div>
+                                </div>
+                                <div className="form-row">
                                 </div>
                             </form> 
                         </div>

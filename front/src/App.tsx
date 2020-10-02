@@ -10,6 +10,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import PageNotFound from './pages/page-not-found'
 
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App: FunctionComponent = () => {
     const login = (email:String, password:String) => {
@@ -17,7 +19,7 @@ const App: FunctionComponent = () => {
           {
             'email':email,
             'password':password,
-            "remember_me": true
+            "remember_me": false
           }
         )
         //axios.get('/debug')
@@ -27,12 +29,13 @@ const App: FunctionComponent = () => {
             //alert('123');
             console.log(res);
             console.log(res.data);
+            toast("Vous êtes connécté :)");
         })
         .catch(function (error) {
               // console.log(error.response.data);
               // console.log(error.response.status);
               console.log(error);
-              alert("ERROR");
+            toast.error("Identifiant incorrect ! On t'a reconnu Marc !");
           });
     }
     const signup = (email:String, password:String, firstname:String, lastname:String) => {
@@ -55,11 +58,31 @@ const App: FunctionComponent = () => {
             alert("ERROR");
         });
   }
-    const [IsLogged, setIsLogged] = useState<Boolean>(false);
 
+    const [IsLogged, setIsLogged] = useState<Boolean>(false);
+      axios.post('/logout')
+      .then(res => {
+        console.log(res);
+        alert("SUCCESS");
+      })
+      .catch(function (error) {
+            console.log(error);
+            alert("ERROR");
+        });
     return (
         <Router>
-                <Navbar />
+          <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          />
+                {IsLogged&&<Navbar />}
                 <Switch>
                     <Route exact path="/" component={() => !IsLogged&&<Home login={login} signup={signup}/>||<UserList/>}/>
                     <Route exact path="/users" component={IsLogged&&UserList||Home}/>
