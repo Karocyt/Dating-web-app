@@ -50,6 +50,7 @@ class Schema:
         picture_4 varchar(1024),
         picture_5 varchar(1024),
         validated tinyint DEFAULT 0 NOT NULL,
+        banned tinyint DEFAULT 0 NOT NULL,
         last_seen timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
         age int DEFAULT NULL,
         lat float DEFAULT NULL,

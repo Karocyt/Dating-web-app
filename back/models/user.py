@@ -10,7 +10,7 @@ class User():
         "id", "first_name", "last_name", "email", "password", "sex",
         "orientation", "bio", "views_count", "likes_count",
         "picture_1", "picture_2", "picture_3", "picture_4", "picture_5",
-        "validated", "last_seen", "age", "lat", "lon")
+        "validated", "banned", "last_seen", "age", "lat", "lon")
     __restricted_fields__ = ("id", "validated", "views_count", "likes_count", "last_seen")
     __private_fields__ = ("last_seen")
 
@@ -85,6 +85,9 @@ class User():
         self.bio = None
         self.score = 0.0
         self.validated = 0
+        self.lon = 0
+        self.lat = 0
+        self.last_seen = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
         if not empty:
             self.first_name = Validator.name(first_name)
             self.last_name = Validator.name(last_name)
@@ -193,6 +196,25 @@ class User():
             return False
         query = "INSERT INTO reports (user_id, reported) VALUES (?, ?)"
         db.exec(query, (self.id, user.id))
+
+
+        query = "SELECT COUNT(*) FROM visits WHERE visited=?"
+        db.exec(query, (user.id,))
+        rows = db.cur.fetchall()
+        visits = 1
+        if len(rows) is not 0:
+            visits = float(rows[0][0])
+
+        query = "SELECT COUNT(*) FROM reports WHERE reported=?"
+        db.exec(query, (user.id,))
+        rows = db.cur.fetchall()
+        reports = 0
+        if len(rows) is not 0:
+            reports = float(rows[0][0])
+        if reports / visits > 0.3:
+            query = "UPDATE users SET banned=1 WHERE id=?"
+            db.exec(query, (user.id,))
+
         return True
 
     def visit(self, user):
