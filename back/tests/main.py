@@ -206,7 +206,7 @@ def test_matches():
     response = user1["session"].get(f"{url}/matches")
     # print(response, response.text)
     assert response.status_code == 200
-    assert len(response.json()["matches"]) == 1
+    assert len(response.json()["users"]) == 1
 
     response = unlike(user2, user1)
     # print(response, response.text)
@@ -215,7 +215,7 @@ def test_matches():
     response = user1["session"].get(f"{url}/matches")
     # print(response, response.text)
     assert response.status_code == 200
-    assert len(response.json()["matches"]) == 0
+    assert len(response.json()["users"]) == 0
     unlike(user1, user2)
 
     like(user1, user2)
