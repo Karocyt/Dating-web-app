@@ -29,6 +29,8 @@ class Schema:
         self.create_reports_table()
         self.create_visits_table()
         self.create_validations_table()
+        self.create_tags_table()
+        self.create_user_tags_table()
 
     def create_users_table(self):
 
@@ -39,7 +41,7 @@ class Schema:
         last_name varchar(255) NOT NULL,
         email varchar(255) NOT NULL,
         password varchar(255) NOT NULL,
-        sex varchar(63),
+        sex varchar(63) DEFAUL "other",
         orientation varchar(63) DEFAULT 'bisexual',
         bio text DEFAULT '' NOT NULL,
         views_count int DEFAULT 0 NOT NULL,
