@@ -118,7 +118,6 @@ class User():
         # Unpack pictures array:
         if "pictures" in new_values:
             pictures = []
-            import json
             # print(new_values["pictures"])
             pictures += new_values["pictures"]
             # print(pictures, flush=True)
