@@ -4,6 +4,8 @@ from werkzeug.security import check_password_hash
 
 from .. import db
 from ..utils import Validator
+from .tag import Tag
+from ..utils.errors import InvalidData
 
 class User():
     __fields__ = (
@@ -168,6 +170,7 @@ class User():
         self.clear_reports()
         self.clear_blocks()
         self.clear_likes()
+        self.clear_tags()
         query = "DELETE FROM validations WHERE user_id=" + str(self.id)
         db.exec(query)
         query = "DELETE FROM user_tags WHERE user_id=" + str(self.id)
@@ -334,6 +337,22 @@ class User():
 
         rows = db.cur.fetchall()
         return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
+    
+    @property
+    def tags_list(self):
+        query = """
+            SELECT
+                t.name
+            FROM user_tags ut
+            INNER JOIN tags t
+                ON ut.tag_id = t.id
+            WHERE
+                ut.user_id=?
+            """
+        db.exec(query, (self.id,))
+
+        rows = db.cur.fetchall()
+        return [str(t[0]) for t in rows]
 
     @property
     def blocked_by(self):
@@ -354,6 +373,7 @@ class User():
     @property
     def dict(self):
         d = vars(self)
+        d["tags"] = self.tags_list
         return d
 
     def public_as(self, user):
@@ -383,7 +403,8 @@ class User():
             "sex": self.sex,
             "lon": self.lon,
             "lat": self.lat,
-            "last_seen": self.last_seen
+            "last_seen": self.last_seen,
+            "tags": self.tags_list
         }
 
     @property
@@ -426,4 +447,13 @@ class User():
     def clear_likes(self):
         query = "DELETE from likes WHERE user_id=? or liked=?"
         db.exec(query, (self.id, self.id))
+
+    def clear_tags(self):
+        query = "DELETE from user_tags WHERE user_id=?"
+        db.exec(query, (self.id,))
         
+    def add_tag(self, tag):
+        if type(tag) is not Tag:
+            raise InvalidData(f"{tag} is not a Tag object")
+        query = "INSERT IGNORE INTO `users_tags` SET user_id=? tag_id=?"
+        db.exec(query, (self.id, tag.id))

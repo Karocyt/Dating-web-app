@@ -161,7 +161,7 @@ class Schema:
 
         query = """
         CREATE TABLE IF NOT EXISTS tags (
-        id int NOT NULL,
+        id int NOT NULL AUTO_INCREMENT,
         name varchar(100) NOT NULL,
         
         PRIMARY KEY (id)
@@ -175,11 +175,11 @@ class Schema:
         query = """
         CREATE TABLE IF NOT EXISTS user_tags (
         user_id int NOT NULL,
-        tag int NOT NULL,
+        tag_id int NOT NULL,
         
-        PRIMARY KEY (user_id, tag),
+        PRIMARY KEY (user_id, tag_id),
         FOREIGN KEY (user_id) REFERENCES users(id),
-        FOREIGN KEY (tag) REFERENCES tags(id)
+        FOREIGN KEY (tag_id) REFERENCES tags(id)
         ) ENGINE=InnoDB;
         """
 

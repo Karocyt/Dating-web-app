@@ -29,7 +29,7 @@ def test_create():
     create(user1)
     create(user2)
 
-def test_content():
+def test_base_content():
     tmp = {
         "bio": "",
         "email": "tesfdfddt1@gmail.com",
@@ -54,6 +54,7 @@ def test_content():
     r = update(tmp, check)
     check["banned"] = 0
     check["validated"] = 1
+    check["tags"] = []
     assert r.status_code == 200
     profile = get_profile(tmp)
     check["id"] = profile["id"]
@@ -321,6 +322,14 @@ def test_report():
     assert response.status_code == 400
     response = like(user1, user2)
     assert response.status_code == 403
+
+def test_tags():
+    login(user1)
+    login(user2)
+    response = user1["session"].get(f"{url}/profile")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["tags"] == []
 
 def test_delete():
     login(user1)
