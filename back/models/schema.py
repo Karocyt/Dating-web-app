@@ -41,7 +41,7 @@ class Schema:
         last_name varchar(255) NOT NULL,
         email varchar(255) NOT NULL,
         password varchar(255) NOT NULL,
-        sex varchar(63) DEFAUL "other",
+        sex varchar(63) DEFAULT 'other',
         orientation varchar(63) DEFAULT 'bisexual',
         bio text DEFAULT '' NOT NULL,
         views_count int DEFAULT 0 NOT NULL,
@@ -160,11 +160,11 @@ class Schema:
     def create_tags_table(self):
 
         query = """
-        CREATE TABLE IF NOT EXISTS blocks (
+        CREATE TABLE IF NOT EXISTS tags (
         id int NOT NULL,
         name varchar(100) NOT NULL,
         
-        PRIMARY KEY (name),
+        PRIMARY KEY (id)
         ) ENGINE=InnoDB;
         """
 
