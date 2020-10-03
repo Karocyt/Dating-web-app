@@ -164,6 +164,8 @@ class User():
         self.clear_likes()
         query = "DELETE FROM validations WHERE user_id=" + str(self.id)
         db.exec(query)
+        query = "DELETE FROM user_tags WHERE user_id=" + str(self.id)
+        db.exec(query)
         query = "DELETE FROM visits WHERE user_id=? or visited=?"
         db.exec(query, (self.id, self.id))
         query = "DELETE FROM users WHERE id=" + str(self.id)
