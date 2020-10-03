@@ -510,5 +510,41 @@ Content-Type: application/json
 }
 ```
 
+## Tags
+
+**You send:**  Your `session` cookie  
+**You get:** A list of all the existing tags
+
+**Request:**
+```json
+GET /tags HTTP/1.1
+Cookie: session=eyJfcGVybWFuZW50Ijp0cnVlLCJ1c2VyIjoxfQ.X1Uwog.BBHCto1CAuJj_9RLJ0g5kPHgtbU
+Content-Type: application/json
+```
+**Successful Response:**
+```json
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    "tags":  ["artiste", "autiste"],
+}
+
+**You send:**  Your `session` cookie  
+**You get:** A list of all the tags you haven't subscribed to yet
+
+**Request:**
+```json
+POST /tags HTTP/1.1
+Cookie: session=eyJfcGVybWFuZW50Ijp0cnVlLCJ1c2VyIjoxfQ.X1Uwog.BBHCto1CAuJj_9RLJ0g5kPHgtbU
+Content-Type: application/json
+```
+**Successful Response:**
+```json
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    "tags":  ["artiste"],
+}
+
 ## Author
 * **Kevin Azoulay** @ 42 Lyon
