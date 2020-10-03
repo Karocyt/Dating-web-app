@@ -106,7 +106,8 @@ Content-Type: application/json
     "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
     "lon": 45.454646545,
     "lat": 12.135456464,
-    "age": 21
+    "age": 21,
+    "tags": ["enfants", "sucette", "peignoir"]
 }
 ```
 
@@ -164,7 +165,8 @@ Content-Type: application/json
     "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
     "lon": 45.454646545,
     "lat": 12.135456464,
-    "age": 21
+    "age": 21,
+    "tags": ["enfants", "sucette", "peignoir"]
 }
 ```
 
@@ -191,7 +193,8 @@ Content-Type: application/json
     "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
     "lon": 45.454646545,
     "lat": 12.135456464,
-    "age": 21
+    "age": 21,
+    "tags": ["enfants", "sucette", "peignoir"]
 }
 ```
 
@@ -253,14 +256,15 @@ Content-Type: application/json
 {
     "bio": "",
     "first_name": "roger",
-    "orientation": null,
+    "orientation": "bisexual",
     "pictures": [],
     "score": 0.0,
     "sex": "m",
     "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
     "lon": 45.454646545,
     "lat": 12.135456464,
-    "age": 21
+    "age": 21,
+    "tags": ["enfants", "sucette", "peignoir"]
 }
 ```
 
@@ -291,7 +295,8 @@ Content-Type: application/json
     "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
     "lon": 45.454646545,
     "lat": 12.135456464,
-    "age": 21
+    "age": 21,
+    "tags": ["enfants", "sucette", "peignoir"]
 }
 ```
 
