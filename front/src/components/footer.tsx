@@ -52,8 +52,8 @@ const Footer: FunctionComponent = () => {
                     </div>
                     <hr className="clearfix w-100 d-md-none pb-3"/>
                     <div className="col-md-6 mt-md-0 mt-3  text-center">
-                        <h5 className="text-uppercase font-weight-bold">Phillipe Cachin</h5>
-                        <p>Réalisation de la partie back-end et base de donnée en python avec flask et Mysql</p>
+                        <h5 className="text-uppercase font-weight-bold">Kevin Azoulay</h5>
+                        <p>Réalisation de la partie back-end et base de donnée en python avec flask et MariaDB</p>
                         <ul className="list-unstyled list-inline text-center">
                             <li className="list-inline-item">
                                 <a className="btn-floating btn-fb mx-1">
