@@ -42,6 +42,9 @@ const Home: FunctionComponent<Props> = ({login, signup}) => {
                                     <br/>
                                     <input onChange={(e) => setSigninPassword(e.target.value)} type="password" className="form-control" placeholder="Mot de passe" name="password"/>
                                     <br/>
+                                <div>
+                                    Se souvenir de moi <input type="checkbox" ></input>
+                                </div>
                             </div>
                             <div className="modal-footer">
                                 <button onClick={() => login(signinUsername, signinPassword)} type="button" className="btn btn-success" data-dismiss="modal">Valider</button>
