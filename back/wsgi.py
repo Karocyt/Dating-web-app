@@ -29,12 +29,13 @@ def create_app():
         print(f"{os.environ['FLASK_GMAIL']} email configured", flush=True)
     app.app_context().push() 
 
-    from .routes import actions, user_crud, users_list, reset_password, healthcheck
+    from .routes import actions, user_crud, users_list, reset_password, healthcheck, list_tags
     app.register_blueprint(actions)
     app.register_blueprint(healthcheck)
     app.register_blueprint(user_crud)
     app.register_blueprint(users_list)
     app.register_blueprint(reset_password)
+    app.register_blueprint(list_tags)
    
     return app
     
