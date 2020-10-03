@@ -464,6 +464,7 @@ class User():
         query = f"""
             INSERT INTO `user_tags` (user_id, tag_id) VALUES {", ".join(["(?, ?)"] * len(tags))};
         """
-        params = tuple((i for sub in zip([self.id] * len(tags), [t.id for t in tags]) for i in sub))
-        print(params, [t.name for t in tags])
+        params = zip([self.id] * len(tags), [t.id for t in tags])
+        params = tuple(i for t in params for i in t)
+        # print(params, [t.name for t in tags])
         db.exec(query, params)

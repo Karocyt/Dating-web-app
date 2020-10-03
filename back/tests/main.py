@@ -338,6 +338,12 @@ def test_tags():
     data = response.json()
     assert data["tags"] == ["cigares"]
 
+    response = update(user1, {"tags": [""]})
+    assert response.status_code == 400
+    response = user1["session"].get(f"{url}/profile")
+    data = response.json()
+    assert data["tags"] == ["cigares"]
+
 def test_delete():
     login(user1)
     response = delete(user1)
