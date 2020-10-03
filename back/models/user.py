@@ -117,9 +117,9 @@ class User():
         if "pictures" in new_values:
             pictures = []
             import json
-            print(new_values["pictures"])
+            # print(new_values["pictures"])
             pictures += new_values["pictures"]
-            print(pictures, flush=True)
+            # print(pictures, flush=True)
             self.pictures = []
             for i, path in enumerate(pictures):
                 path = Validator.path(path)
