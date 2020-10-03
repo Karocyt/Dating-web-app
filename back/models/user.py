@@ -127,19 +127,24 @@ class User():
                 new_values[f"picture_{i+1}"] = path
                 self.pictures.append(path)
             del new_values["pictures"]
+        if "tags" in new_values:
+            if len(new_values["tags"]) > 0:
+                self.update_tags(new_values["tags"])
+            del new_values["tags"]
 
         for k in new_values.keys():
             if k not in User.__fields__ or (k in User.__restricted_fields__ and not force):
                 raise KeyError(f"field {k} doesn't exist")
             reqs += [f"{k}=?"]
-        req = ", ".join(reqs)
-        query = "UPDATE users SET " + req + " WHERE id=" + str(self.id)
-        for (k, v) in new_values.items():
-            if "picture" in k:
-                continue
-            checker = getattr(Validator, k)
-            setattr(self, k, checker(v))
-        db.exec(query, tuple(new_values.values()))
+        if len(reqs) > 0:
+            req = ", ".join(reqs)
+            query = "UPDATE users SET " + req + " WHERE id=" + str(self.id)
+            for (k, v) in new_values.items():
+                if "picture" in k:
+                    continue
+                checker = getattr(Validator, k)
+                setattr(self, k, checker(v))
+            db.exec(query, tuple(new_values.values()))
         return True
 
     @staticmethod
@@ -451,8 +456,14 @@ class User():
         query = "DELETE from user_tags WHERE user_id=?"
         db.exec(query, (self.id,))
         
-    def add_tag(self, tag):
-        if type(tag) is not Tag:
-            raise InvalidData(f"{tag} is not a Tag object")
-        query = "INSERT IGNORE INTO `users_tags` SET user_id=? tag_id=?"
-        db.exec(query, (self.id, tag.id))
+    def update_tags(self, tags):
+        if type(tags) is not list or type(tags[0]) is not str:
+            raise InvalidData(f"{tags} is not a list of strings")
+        tags = [Tag(t) for t in tags]
+        self.clear_tags()
+        query = f"""
+            INSERT INTO `user_tags` (user_id, tag_id) VALUES {", ".join(["(?, ?)"] * len(tags))};
+        """
+        params = tuple((i for sub in zip([self.id] * len(tags), [t.id for t in tags]) for i in sub))
+        print(params, [t.name for t in tags])
+        db.exec(query, params)

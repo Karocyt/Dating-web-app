@@ -325,11 +325,18 @@ def test_report():
 
 def test_tags():
     login(user1)
-    login(user2)
     response = user1["session"].get(f"{url}/profile")
     assert response.status_code == 200
     data = response.json()
     assert data["tags"] == []
+    response = update(user1, {"tags": ["pipe", "cigares"]})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["tags"] == ["pipe", "cigares"]
+    response = update(user1, {"tags": ["cigares"]})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["tags"] == ["cigares"]
 
 def test_delete():
     login(user1)
