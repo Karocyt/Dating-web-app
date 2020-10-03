@@ -325,7 +325,13 @@ def test_report():
 def test_delete():
     login(user1)
     response = delete(user1)
+    logout(user1)
     assert response.status_code == 200
     login(user2)
     response = delete(user2)
+    logout(user2)
     assert response.status_code == 200
+
+def test_profile_not_connected():
+    response = user1["session"].get(f"{url}/profile")
+    assert response.status_code != 500
