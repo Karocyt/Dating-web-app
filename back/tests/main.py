@@ -455,8 +455,10 @@ def test_populate():
         users.append(user)
         return user
     data = []
-    while len(data) is 0:
+    tries = 0
+    while len(data) is 0 and tries < 2:
         try:
+            tries += 1
             data = requests.get('https://randomuser.me/api/?format=json?nat=fr?page=1&results=23&seed=pcachin').json()
         except:
             print("error while fetching random users, retrying...")
