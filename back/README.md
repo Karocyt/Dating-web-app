@@ -178,26 +178,22 @@ Content-Type: application/json
 ```json
 PUT /profile HTTP/1.1
 Cookie: session=eyJfcGVybWFuZW50Ijp0cnVlLCJ1c2VyIjoxfQ.X1Uwog.BBHCto1CAuJj_9RLJ0g5kPHgtbU
-Content-Type: multipart/form-data; boundary=---------------------------9051914041544843365972754266
+Content-Type: multipart/form-data; boundary=9051914041544843365972754266
 Content-Length: xy
 
------------------------------9051914041544843365972754266
-Content-Disposition: form-data; name="text"
-
-*Content of the file*
------------------------------9051914041544843365972754266
+--9051914041544843365972754266
 Content-Disposition: form-data; name="file1"; filename="a.png"
 Content-Type: text/plain
 
 *Content of the file*
 
------------------------------9051914041544843365972754266
+--9051914041544843365972754266
 Content-Disposition: form-data; name="file2"; filename="a.jpg"
 Content-Type: text/html
 
-Content of the file
+*Content of the file*
 
------------------------------9051914041544843365972754266--
+--9051914041544843365972754266--
 ```
 **Successful Response:**
 ```json
