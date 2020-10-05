@@ -46,15 +46,19 @@ def test_populate():
         return user
     data = []
     tries = 0
-    while len(data) == 0 and tries < 2:
-        try:
-            tries += 1
-            data = requests.get('https://randomuser.me/api/?format=json?nat=fr?page=1&results=23&seed=pcachin').json()
-        except:
-            print("error while fetching random users, retrying...")
-            time.sleep(1)
-    for u in data["results"]:
-        create_user(u)
+
+    create(user1, checks=False)
+    login(user1)
+    if len(user1["session"].get(f"{url}/users").json()["users"]) < 10:
+        while len(data) == 0 and tries < 2:
+            try:
+                tries += 1
+                data = requests.get('https://randomuser.me/api/?format=json?nat=fr?page=1&results=23&seed=pcachin').json()
+            except:
+                print("error while fetching random users, retrying...")
+                time.sleep(1)
+        for u in data["results"]:
+            create_user(u)
 
 def test_clean_populate():
     if "POPULATE_DB" not in os.environ or os.environ["POPULATE_DB"] not in ["True", "true"]:
@@ -62,3 +66,4 @@ def test_clean_populate():
             login(u)
             delete(u)
     assert 1 == 1
+    delete(user1)

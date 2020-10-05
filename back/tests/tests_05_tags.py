@@ -14,10 +14,10 @@ def test_tags():
 
     # Check tags are empty
     response = user1["session"].get(f"{url}/tags")
-    print(response.json(), flush=True)
+    # print(response.json(), flush=True)
     assert response.status_code == 200
     data = response.json()
-    assert data["tags"] == []
+    assert "cigares" not in data["tags"] and "pipe" not in data["tags"]
 
     # Check user tags are empty
     response = user1["session"].get(f"{url}/profile")
@@ -35,37 +35,38 @@ def test_tags():
     response = user1["session"].get(f"{url}/tags")
     assert response.status_code == 200
     data = response.json()
-    assert data["tags"] == ["pipe", "cigares"]
+    print(data, flush=True)
+    assert "cigares" in data["tags"] and "pipe" in data["tags"]
 
     # Check relative list is ok
     response = user1["session"].post(f"{url}/tags")
     assert response.status_code == 200
     data = response.json()
-    assert data["tags"] == []
+    assert "cigares" not in data["tags"] and "pipe" not in data["tags"]
 
     # Check tags can be partially deleted
     response = update(user1, {"tags": ["cigares"]})
     assert response.status_code == 200
     data = response.json()
-    assert data["tags"] == ["cigares"]
+    assert "cigares" in data["tags"] and "pipe" not in data["tags"]
 
     # Check tags list is ok
     response = user1["session"].get(f"{url}/tags")
     assert response.status_code == 200
     data = response.json()
-    assert data["tags"] == ["cigares"]
+    assert "cigares" in data["tags"] and "pipe" not in data["tags"]
 
     # Check relative list is ok
     response = user1["session"].post(f"{url}/tags")
     assert response.status_code == 200
     data = response.json()
-    assert data["tags"] == []
+    assert "cigares" not in data["tags"] and "pipe" not in data["tags"]
 
     # Check relative list is ok for other user
     response = user2["session"].post(f"{url}/tags")
     assert response.status_code == 200
     data = response.json()
-    assert data["tags"] == ["cigares"]
+    assert "cigares" in data["tags"] and "pipe" not in data["tags"]
 
     # Check invalid tag does trigger error and has no side effects
     response = update(user1, {"tags": [""]})
