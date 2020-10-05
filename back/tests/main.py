@@ -1,6 +1,6 @@
 import requests, time, datetime, random, os
-from constants import url, user1, user2
-from utils import (signup, login, validate, create, update, delete,
+from .constants import url, user1, user2
+from .utils import (signup, login, validate, create, update, delete,
                     logout, get_profile, get_public_profile, like, unlike, block, unblock,
                     report)
 
@@ -32,10 +32,10 @@ def test_create():
     create(user1)
     create(user2)
 
-from tests_01_user_crud import *
-from tests_02_user_properties import *
-from tests_03_lists import *
-from tests_04_actions import *
-from tests_05_tags import *
-from tests_06_populate import *
-from tests_99_delete import *
+from .tests_01_user_crud import *
+from .tests_02_user_properties import *
+from .tests_03_lists import *
+from .tests_04_actions import *
+from .tests_05_tags import *
+from .tests_06_populate import *
+from .tests_99_delete import *

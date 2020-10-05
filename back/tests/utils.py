@@ -1,4 +1,4 @@
-from constants import url
+from .constants import url
 
 def signup(user):
     payload = {
