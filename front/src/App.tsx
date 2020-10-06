@@ -32,7 +32,7 @@ const App: FunctionComponent = () => {
             //alert('123');
             console.log(res);
             console.log(res.data);
-            toast("Vous êtes connécté :)");
+            toast.success("Vous êtes connécté :)");
         })
         .catch(function (error) {
               // console.log(error.response.data);
@@ -47,7 +47,7 @@ const App: FunctionComponent = () => {
           setIsLogged(false);
             console.log(res);
             console.log(res.data);
-            toast("Vous êtes bien déconnécté :)");
+            toast.success("Vous êtes bien déconnécté :)");
         })
         .catch(function (error) {
               // console.log(error.response.data);
