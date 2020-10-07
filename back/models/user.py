@@ -70,12 +70,10 @@ class User():
             query = "SELECT * FROM users WHERE id=?"
             db.exec(query,  (kwargs['user_id'],))
         else:
-            #print("get_user: missing parameters", flush=True)
             return None
 
         rows = db.cur.fetchall()
         if len(rows) is 0:
-            #print("get_user: no results", flush=True)
             return None
     
         return User.build_from_db_tuple(rows[0])
