@@ -61,7 +61,7 @@ def signup(payload):
         return error("Saisie incomplète", 400)
     if User.get_user(email=payload["email"]) is not None:
         return error("L'utilisateur existe déjà", 409)
-    if len(payload["password"]) < 6:
+    if len(payload["password"]) < 4: ######## Was for randomuser.me, TO REMOVE / REPLACE ###############################################################
         return error("Mot de passe trop court", 400)
 
     hashed_password = generate_password_hash(payload["password"])
@@ -77,7 +77,6 @@ def signup(payload):
         msg.html = render_template("validation_email.html", link=link)
         mail.send(msg)
     else:
-        print(f"{user.email} validated automatically", flush=True)
         return success({"validation_id": validation_id}, 201)
     if not User.get_user(email=payload["email"]):
         return error("Failed to create user")

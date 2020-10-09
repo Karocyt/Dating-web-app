@@ -33,6 +33,7 @@ services:
       - "5000"
     volumes:
       - ./back:/app/:ro
+      - user-pictures:/data # To store users pictures in persistent storage
     networks:
       - backend
       - frontend
@@ -58,7 +59,6 @@ services:
     volumes:
       - ./front/public:/home/node/app/public
       - ./front/src:/home/node/app/src
-      - user-pictures:/data # To store users pictures in persistent storage
     command: "npm start"
     networks:
       - frontend
@@ -72,13 +72,14 @@ services:
 
   tests_back:
     build: ./back/tests
+    env_file:
+      - config/flask.env
     links:
       - app
     volumes:
       - ./back/tests:/tests
     networks:
       - frontend
-
 
 networks:
   backend:
@@ -87,3 +88,4 @@ networks:
 volumes:
   user-pictures:
   db-data:
+  

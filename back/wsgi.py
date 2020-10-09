@@ -23,18 +23,20 @@ def create_app():
     app.config['MAIL_PASSWORD'] = os.environ['FLASK_GMAIL_PASSWORD']
     app.config['MAIL_USE_TLS'] = False
     app.config['MAIL_USE_SSL'] = True
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # 16Mb max uploads size
 
-    print(os.environ['FLASK_GMAIL'], flush=True)
     if os.environ['FLASK_GMAIL'] is not "":
         mail = Mail(app)
+        print(f"{os.environ['FLASK_GMAIL']} email configured", flush=True)
     app.app_context().push() 
 
-    from .routes import actions, user_crud, users_list, reset_password, healthcheck
+    from .routes import actions, user_crud, users_list, reset_password, healthcheck, list_tags, private_pictures
     app.register_blueprint(actions)
     app.register_blueprint(healthcheck)
     app.register_blueprint(user_crud)
     app.register_blueprint(users_list)
     app.register_blueprint(reset_password)
+    app.register_blueprint(list_tags)
    
     return app
     
