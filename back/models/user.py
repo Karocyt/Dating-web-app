@@ -372,6 +372,7 @@ class User():
     def dict(self):
         d = vars(self)
         d["tags"] = self.tags_list
+        del d["password"]
         return d
 
     def public_as(self, user):
