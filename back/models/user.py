@@ -164,17 +164,9 @@ class User():
         return True
 
     def delete(self):
-        self.clear_resets()
-        self.clear_reports()
-        self.clear_blocks()
-        self.clear_likes()
         self.clear_tags()
-        query = "DELETE FROM validations WHERE user_id=" + str(self.id)
-        db.exec(query)
         query = "DELETE FROM user_tags WHERE user_id=" + str(self.id)
         db.exec(query)
-        query = "DELETE FROM visits WHERE user_id=? or visited=?"
-        db.exec(query, (self.id, self.id))
         query = "DELETE FROM users WHERE id=" + str(self.id)
         db.exec(query)
         return True
@@ -433,18 +425,6 @@ class User():
     def clear_resets(self):
         query = "DELETE from resets WHERE user_id=?"
         db.exec(query, (self.id,))
-
-    def clear_reports(self):
-        query = "DELETE from reports WHERE user_id=? OR reported=?"
-        db.exec(query, (self.id, self.id))
-
-    def clear_blocks(self):
-        query = "DELETE from blocks WHERE user_id=? or blocked=?"
-        db.exec(query, (self.id, self.id))
-
-    def clear_likes(self):
-        query = "DELETE from likes WHERE user_id=? or liked=?"
-        db.exec(query, (self.id, self.id))
 
     def clear_tags(self):
         query = "DELETE from user_tags WHERE user_id=?"
