@@ -6,7 +6,7 @@ import UserList from './pages/user-list'
 import UserDetail from './pages/user-detail'
 import Begin_loader from './pages/begin_loader'
 import Home from './pages/home'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import PageNotFound from './pages/page-not-found'
 
@@ -69,11 +69,21 @@ const App: FunctionComponent = () => {
       )
       .then(res => {
         console.log(res);
-        alert("SUCCESS");
+        alert("SUCCESS_signup");
+        axios.post('/validate/' + res.data.validation_id,
+      )
+      .then(res => {
+        console.log(res);
+        alert("SUCCESS_validate");
       })
       .catch(function (error) {
             console.log(error);
-            alert("ERROR");
+            alert("ERROR_validate");
+        });
+      })
+      .catch(function (error) {
+            console.log(error);
+            alert("ERROR_signup");
         });
   }
 
@@ -106,8 +116,8 @@ const App: FunctionComponent = () => {
             <div>
                 <Switch>
                     <Route exact path="/" component={() => !IsLogged&&<Home login={login} signup={signup}/>||<UserList/>}/>
-                    <Route exact path="/users" component={IsLogged&&UserList||Home}/>
-                    <Route path="/users/:id" component={IsLogged&&UserDetail||Home}/>
+                    <Route exact path="/users" component={() => IsLogged && <UserList/> || <Home login={login} signup={signup}/>}/>
+                    <Route path="/users/:id" component={() => IsLogged && <UserDetail user_id={""}/> || <Home login={login} signup={signup}/> }/>
                     <Route component={PageNotFound}/>
                 </Switch>
                 <Footer/>

@@ -1,32 +1,25 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import User from '../models/user';
-import USERS from '../models/mock-user';
+//import USERS from '../models/mock-user';
 import formatDate from '../helpers/format-date';
   
-type Params = { id: string };
+type Props = { user_id: string };
   
-const UsersDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }) => {
+
+const UsersDetail: FunctionComponent<Props> = ({user_id}) => {
     
   const [user, setUser] = useState<User|null>(null);
-  
-  useEffect(() => {
-    USERS.forEach(user => {
-      if (match.params.id === user.id.toString()) {
-        setUser(user);
-      }
-    })
-  }, [match.params.id]);
     
   return (
     <div>
       { user ? (
         <div className="row">
           <div className="col s12 m8 offset-m2"> 
-            <h2 className="header center">{ user.name }</h2>
+            <h2 className="header center">{ user.first_name }</h2>
             <div className="card hoverable"> 
               <div className="card-image">
-                <img src={user.picture} alt={user.name} style={{width: '250px', margin: '0 auto'}}/>
+                <img src={user.pictures[0]} alt={user.first_name} style={{width: '250px', margin: '0 auto'}}/>
               </div>
               <div className="card-stacked">
                 <div className="card-content">
@@ -34,7 +27,7 @@ const UsersDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }) 
                     <tbody>
                       <tr> 
                         <td>Nom</td> 
-                        <td><strong>{ user.name }</strong></td> 
+                        <td><strong>{ user.first_name }</strong></td> 
                       </tr>
                       {/*
                       <tr> 
@@ -54,7 +47,7 @@ const UsersDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }) 
                           </tr> */}
                       <tr> 
                         <td>Date de création</td> 
-                        <td>{formatDate(user.created)}</td> 
+                        <td>{/*formatDate(user.created)*/}</td> 
                       </tr>
                     </tbody>
                   </table>

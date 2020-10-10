@@ -42,8 +42,7 @@ const Navbar: FunctionComponent<Props> = ({logout}) => {
                         <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fa fa-newspaper-o"></i> 
                         <i className="fa fa-user-circle"> </i> </a>
                         <div className="dropdown-menu dropdown-menu-right dropdown-cyan" aria-labelledby="navbarDropdownMenuLink-4">
-                            <a className="dropdown-item" href="#">Voir mon profil</a>
-                            <a className="dropdown-item" href="#">Modifier mon profil</a>
+                            <a className="dropdown-item" href="#">Profil</a>
                             <a className="dropdown-item" style={{backgroundColor:"#ff0000", color:"white"}} onClick={() => logout()} href="#">Se déconnecter</a>
                         </div>
                     </li>

@@ -1,17 +1,59 @@
 /* eslint-disable */
 import React,{ FunctionComponent, useState, useEffect } from 'react';
 import User from '../models/user';
-import USER_LIST from '../models/mock-user';
+//import USER_LIST from '../models/mock-user';
 import UserCard from '../components/user-card'
 import getGenderColor from '../helpers/get-gender-color'
+
+import axios from 'axios';
 
 
 const UserList: FunctionComponent = () => {
     const [users, setUSers] = useState<User[]>([]);
 
+      useEffect(() => {
+        var ret = [];
+        axios.get('/users')
+        .then(res => {
+            console.log(res)
+            ret = res.data;
+            setUSers(res.data);
+            alert("sucess_get_users");
+          //setIsLogged(true);
+          //setIsLoad(true);
+        })
+        .catch(function (error) {
+            console.log(error)
+            alert("error_get_users");
+          //setIsLoad(true);
+        })
+
+    }, [])
+/*
+    function get_users()
+    {
+        var ret = new Array();
+        axios.get('/users')
+        .then(res => {
+            console.log(res)
+            alert("sucess_get_users");
+          //setIsLogged(true);
+          //setIsLoad(true);
+        })
+        .catch(function (error) {
+            console.log(error)
+            alert("error_get_users");
+          //setIsLoad(true);
+          })
+        return ret;
+    }
+    */
+    /*
     useEffect(() => {
-        setUSers(USER_LIST);
-    },[])//Le [] veut dire que l on execute setUSers seulement si users vaut [] (la premiere fois seulement quoi ^^)
+        //setUSers(USER_LIST);
+        setUSers(get_users())
+    },[])*/
+//Le [] veut dire que l on execute setUSers seulement si users vaut [] (la premiere fois seulement quoi ^^)
 
     return (
 
@@ -92,11 +134,16 @@ const UserList: FunctionComponent = () => {
             <div className="card">
     
               <div className="card-body">
-              <div className="row">
-                        {users && users.map((user) => (
-                            <UserCard user={user} key={user.id} borderColorHover={getGenderColor(user.gender)}/>
-                        ))}
+                <div className="row">
+                    {/*users && users.map((user) => (
+                        <UserCard user={user} key={user.id} borderColorHover={getGenderColor(user.sex)}/>
+                    ))*/}
+                    {users && users[0] &&
+                        <div>
+                            {users[0].sex}
                         </div>
+                    }
+                </div>
               </div>
     
             </div>
