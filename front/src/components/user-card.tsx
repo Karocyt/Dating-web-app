@@ -30,7 +30,7 @@ const UserCard: FunctionComponent<Props> = ({user, borderColorHover='red'}) => {
                 <div className="card-body">
                     <h4 className="card-title text-center">{user.first_name}</h4>
                     {/*<p className="card-text">{created.toString()}</p>*/}
-                    {/*<p className="card-text">{user.gender}</p>*/}
+                    {<p className="card-text">{user.sex}</p>}
                     {/*user.types.map(type => (
                         <span key={type} className="badge badge-pill badge-secondary">{type}</span>
                     ))*/}

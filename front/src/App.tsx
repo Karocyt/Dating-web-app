@@ -4,6 +4,7 @@ import Navbar from './components/navbar'
 import Footer from './components/footer'
 import UserList from './pages/user-list'
 import UserDetail from './pages/user-detail'
+import MyProfile from './pages/my_profile'
 import Begin_loader from './pages/begin_loader'
 import Home from './pages/home'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
@@ -116,6 +117,7 @@ const App: FunctionComponent = () => {
             <div>
                 <Switch>
                     <Route exact path="/" component={() => !IsLogged&&<Home login={login} signup={signup}/>||<UserList/>}/>
+                    <Route exact path="/my_profile" component={() => IsLogged && <MyProfile /> || <Home login={login} signup={signup}/>}/>
                     <Route exact path="/users" component={() => IsLogged && <UserList/> || <Home login={login} signup={signup}/>}/>
                     <Route path="/users/:id" component={() => IsLogged && <UserDetail user_id={""}/> || <Home login={login} signup={signup}/> }/>
                     <Route component={PageNotFound}/>
