@@ -6,6 +6,7 @@ import UserList from './pages/user-list'
 import UserDetail from './pages/user-detail'
 import MyProfile from './pages/my_profile'
 import Begin_loader from './pages/begin_loader'
+import Chat_widget from './pages/chat_widget'
 import Home from './pages/home'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
@@ -122,6 +123,7 @@ const App: FunctionComponent = () => {
                     <Route path="/users/:id" component={() => IsLogged && <UserDetail user_id={""}/> || <Home login={login} signup={signup}/> }/>
                     <Route component={PageNotFound}/>
                 </Switch>
+                {IsLogged && <Chat_widget />}
                 <Footer/>
             </div>
             ||
