@@ -25,31 +25,6 @@ const UserList = () => {
         });
     })();
   }, []);
-  /*
-    function get_users()
-    {
-        var ret = new Array();
-        axios.get('/users')
-        .then(res => {
-            console.log(res)
-            alert("sucess_get_users");
-          //setIsLogged(true);
-          //setIsLoad(true);
-        })
-        .catch(function (error) {
-            console.log(error)
-            alert("error_get_users");
-          //setIsLoad(true);
-          })
-        return ret;
-    }
-    */
-  /*
-    useEffect(() => {
-        //setUSers(USER_LIST);
-        setUSers(get_users())
-    },[])*/
-  //Le [] veut dire que l on execute setUSers seulement si users vaut [] (la premiere fois seulement quoi ^^)
 
   return (
     <div className="container">
@@ -125,6 +100,8 @@ const UserList = () => {
                     </div>
                     <div className="col-4">100</div>
                   </div>
+
+                <button type="button" onClick={() => {}} className="btn btn-success">Enregistrer</button>
                 </div>
               </div>
             </div>
@@ -136,7 +113,7 @@ const UserList = () => {
             <div className="card-body">
             <ul className="nav nav-tabs">
               <li className="nav-item">
-                <a class="nav-link active" href="#">Vue globales</a>
+                <a className="nav-link active" href="#">Vue globales</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">Ça va matché ! </a>
@@ -150,15 +127,8 @@ const UserList = () => {
                 {users && users.map((user) => (
                       <UserCard user={user} key={user.id} borderColorHover={getGenderColor(user.sex)}/>
                     )
-                  )
+                  )  || <div>No UsEr !</div>
                 }
-                {users && users[0] && (
-                  <UserCard
-                    user={users[0]}
-                    key={users[0].id}
-                    borderColorHover={getGenderColor(users[0].sex)}
-                  />
-                ) || <div>No UsEr !</div>}
               </div>
             </div>
           </div>

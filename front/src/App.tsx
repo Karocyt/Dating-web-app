@@ -120,7 +120,7 @@ const App: FunctionComponent = () => {
                     <Route exact path="/" component={() => !IsLogged&&<Home login={login} signup={signup}/>||<UserList/>}/>
                     <Route exact path="/my_profile" component={() => IsLogged && <MyProfile /> || <Home login={login} signup={signup}/>}/>
                     <Route exact path="/users" component={() => IsLogged && <UserList/> || <Home login={login} signup={signup}/>}/>
-                    <Route path="/users/:id" component={() => IsLogged && <UserDetail user_id={""}/> || <Home login={login} signup={signup}/> }/>
+                    <Route path="/users/:id" component={() => IsLogged && <UserDetail/> || <Home login={login} signup={signup}/> }/>
                     <Route component={PageNotFound}/>
                 </Switch>
                 {IsLogged && <Chat_widget />}

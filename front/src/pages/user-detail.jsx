@@ -9,30 +9,22 @@ import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
 import axios from 'axios';
+import { useRouteMatch } from "react-router-dom";
+  
 
+const UsersDetail = () => {
 
-const MyProfile: FunctionComponent = () => {
-    
-
+  let match = useRouteMatch("/users/:id");
   const history = useHistory()
 
 
-  const [user, setUser] = useState<User[]|[]>([]);
+  const [user, setUser] = useState([]);
 
   useEffect(() => {
     setMy_profile_loader(true)
-    axios.get('/profile')
+    axios.get(`/users/${match.params.id}`)
     .then(res => {
         setUser(Array(res.data));
-        setMy_profile_first_name(res.data.first_name);
-        setMy_profile_last_name(res.data.last_name);
-        setMy_profile_age(parseInt(res.data.age));
-        setMy_profile_bio(res.data.bio);
-        setMy_profile_sex(res.data.sex);
-        console.log(res)
-        //alert("sucess_get_users");
-      //setIsLogged(true);
-      //setIsLoad(true);
     })
     .catch(function (error) {
         console.log(error)
@@ -44,56 +36,7 @@ const MyProfile: FunctionComponent = () => {
 }, [])
 
 
-const [my_profile_loader, setMy_profile_loader] = useState<boolean>(true);
-
-const [my_profile_first_name, setMy_profile_first_name] = useState<string>("");
-const [my_profile_last_name, setMy_profile_last_name] = useState<string>("");
-const [my_profile_age, setMy_profile_age] = useState<number>(0);
-const [my_profile_bio, setMy_profile_bio] = useState<string>("");
-const [my_profile_sex, setMy_profile_sex] = useState<string>("");
-
-  const send_modification = () => {
-    setMy_profile_loader(true);
-    axios.put("/profile",
-    {
-      'first_name':my_profile_first_name,
-      'last_name':my_profile_last_name,
-      "age": my_profile_age,
-      "bio":my_profile_bio,
-      "sex":my_profile_sex,
-    })
-    .then((res) => {
-      setUser(Array(res.data));
-      setMy_profile_first_name(res.data.first_name);
-      setMy_profile_last_name(res.data.last_name);
-      setMy_profile_age(parseInt(res.data.age));
-      setMy_profile_bio(res.data.bio);
-      setMy_profile_sex(res.data.sex);
-      console.log(res)
-    })
-    .catch(function (error) {
-
-    axios.get('/profile')
-    .then(res => {
-        setUser(Array(res.data));
-        setMy_profile_first_name(res.data.first_name);
-        setMy_profile_last_name(res.data.last_name);
-        setMy_profile_age(parseInt(res.data.age));
-        setMy_profile_bio(res.data.bio);
-        setMy_profile_sex(res.data.sex);
-        console.log(res)
-        //alert("sucess_get_users");
-      //setIsLogged(true);
-      //setIsLoad(true);
-    })
-    .catch(function (error) {
-        console.log(error)
-        alert("error_get_users");
-      //setIsLoad(true);
-    })
-    });
-    setMy_profile_loader(false);
-  }
+const [my_profile_loader, setMy_profile_loader] = useState(true);
 
   return (
     <div>
@@ -111,15 +54,15 @@ const [my_profile_sex, setMy_profile_sex] = useState<string>("");
                     <tbody>
                       <tr> 
                         <td>Prénom</td> 
-                        <td><input type="text" onChange={(e) => setMy_profile_first_name(e.target.value)} value={my_profile_first_name}></input></td> 
+                        <td>{user[0].first_name}</td> 
                       </tr>
                       <tr> 
                         <td>Nom</td> 
-                        <td><input type="text" onChange={(e) => setMy_profile_last_name(e.target.value)} value={my_profile_last_name}></input></td> 
+                        <td>{user[0].last_name}</td> 
                       </tr>
                       <tr> 
                         <td>Age</td> 
-                        <td><input type="number" onChange={(e) => setMy_profile_age(parseInt(e.target.value))} value={my_profile_age}></input></td> 
+                        <td>{user[0].age}</td> 
                       </tr>
                       <tr> 
                         <td>Last seens</td> 
@@ -131,11 +74,11 @@ const [my_profile_sex, setMy_profile_sex] = useState<string>("");
                       </tr>
                       <tr> 
                         <td>Sex</td> 
-                        <td><input type="text" onChange={(e) => setMy_profile_sex(e.target.value)} value={my_profile_sex}></input></td> 
+                        <td>{user[0].sex}</td> 
                       </tr>
                       <tr> 
                         <td>Bio</td> 
-                        <td><textarea onChange={(e) => setMy_profile_bio(e.target.value)} value={my_profile_bio}></textarea></td>
+                        <td>{user[0].bio}</td>
                       </tr>
                       {/*
                       <tr> 
@@ -161,7 +104,6 @@ const [my_profile_sex, setMy_profile_sex] = useState<string>("");
                   </table>
                 </div>
                 <button type="button" onClick={() => history.push('/users')} className="btn btn-danger">Retour</button>
-                <button type="button" onClick={() => send_modification()} className="btn btn-success">Enregistrer</button>
               </div>
             </div>
           </div>
@@ -176,4 +118,4 @@ const [my_profile_sex, setMy_profile_sex] = useState<string>("");
   );
 }
   
-export default MyProfile;
+export default UsersDetail;
