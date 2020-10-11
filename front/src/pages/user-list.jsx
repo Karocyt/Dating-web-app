@@ -5,6 +5,10 @@ import User from "../models/user";
 import UserCard from "../components/user-card";
 import getGenderColor from "../helpers/get-gender-color";
 
+import Map from 'pigeon-maps'
+import Marker from 'pigeon-marker'
+import Overlay from 'pigeon-overlay'
+
 import axios from "axios";
 
 const UserList = () => {
@@ -24,7 +28,13 @@ const UserList = () => {
           //alert("error_get_users");
         });
     })();
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(getPosition);
+    }
   }, []);
+  function getPosition(position) {
+    setGeoloc_pos(Array(position.coords.latitude, position.coords.longitude))
+  }
 
 
   //const [users, setUSers] = useState([]);
@@ -45,6 +55,7 @@ const UserList = () => {
     })();
   }, []);
 
+  const [geoloc_pos, setGeoloc_pos] = useState([]);
   const [frame, setFrame] = useState(0);
 
   return (
@@ -158,7 +169,13 @@ const UserList = () => {
                 Match
               </div>
               :
-              <div>Carte</div>
+                <Map center={geoloc_pos} zoom={12} width={600} height={400}>
+                <Marker anchor={geoloc_pos} payload={1} onClick={({ event, anchor, payload }) => {}} />
+            
+                <Overlay anchor={geoloc_pos} offset={[120, 79]}>
+                  <img src='https://cdn.intra.42.fr/users/medium_pcachin.jpg' width={24} height={15} alt='' />
+                </Overlay>
+              </Map>
               }
             </div>
           </div>
