@@ -26,8 +26,29 @@ const UserList = () => {
     })();
   }, []);
 
+
+  //const [users, setUSers] = useState([]);
+  useEffect(() => {
+    (async function () {
+      axios
+        .get("/matches")
+        .then((res) => {
+          console.log("SuCcEsS:");
+          console.log(res.data)
+          alert("GeT MaTcHeS");
+          //setUSers(res.data.users);
+        })
+        .catch(function (error) {
+          console.log(error);
+          //alert("error_get_users");
+        });
+    })();
+  }, []);
+
+  const [frame, setFrame] = useState(0);
+
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="row">
         <div className="col-lg-3" style={{ top: "50px" }}>
           <div className="list-group" style={{ paddingBottom: "15px" }}>
@@ -113,16 +134,18 @@ const UserList = () => {
             <div className="card-body">
             <ul className="nav nav-tabs">
               <li className="nav-item">
-                <a className="nav-link active" href="#">Vue globales</a>
+                <a className={frame == 0 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => setFrame(0)}>Vue globales</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Ça va matché ! </a>
+                <a className={frame == 1 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => setFrame(1)}>Ça va matché ! </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Carte</a>
+                <a className={frame == 2 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => setFrame(2)} >Carte</a>
               </li>
             </ul> 
             <br/>
+            {
+              frame == 0 ?
               <div className="row">
                 {users && users.map((user) => (
                       <UserCard user={user} key={user.id} borderColorHover={getGenderColor(user.sex)}/>
@@ -130,6 +153,13 @@ const UserList = () => {
                   )  || <div>No UsEr !</div>
                 }
               </div>
+              : frame == 1 ?
+              <div>
+                Match
+              </div>
+              :
+              <div>Carte</div>
+              }
             </div>
           </div>
         </div>

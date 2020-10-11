@@ -6,6 +6,10 @@
 [OK] Creer une classe de type Users
 [OK] L integrer dans la fonction user-list afin de charger la liste des users
 [OK] Afficher la liste des users
-[  ] Afficher un user quand on clique dessus
+[OK] Afficher un user quand on clique dessus
 [OK] Afficher mon profil
-[  ] Modifier mon profil
+[OK] Modifier mon profil
+[  ] Afficher les matchs un par un
+[  ] Afficher la carte interactive des utilisateurs
+[  ] Afficher une selectbox pour le genre
+[  ] Creer des tags
