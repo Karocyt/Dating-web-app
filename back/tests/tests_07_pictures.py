@@ -11,9 +11,11 @@ def test_upload():
     print(response, flush=True)
     print(response.json(), flush=True)
     assert response.status_code == 201
-    pic_url = response.json()["new_picture"].split("/")[-1]
-    pic_url = f"http://app:5000/pictures/{pic_url}"
+    profile = response.json()
+    pic_true_url = profile["pictures"][-1]
+    pic_url = f"http://app:5000/pictures/{pic_true_url.split('/')[-1]}"
     print(pic_url, flush=True)
     response = user1["session"].get(pic_url)
     print(response, flush=True)
     assert response.status_code == 200
+    assert pic_true_url in profile["pictures"]

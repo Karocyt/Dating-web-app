@@ -40,7 +40,10 @@ def new_picture(user):
     filename = secure_filename(pic.filename)
     new_name = f"{user.id}_{filename}"
     pic.save(os.path.join("/data", new_name))
-    return success({'new_picture': f"{public_host}/pictures/{new_name}"}, 201)
+    pic_path = f"{public_host}/pictures/{new_name}"
+    pictures = user.pictures + [pic_path]
+    user.update({'pictures': pictures})
+    return success(user.dict, 201)
 
 @private_pictures.route("/swap_pictures", methods=["POST"])
 @payload_required

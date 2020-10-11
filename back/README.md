@@ -170,8 +170,8 @@ Content-Type: application/json
 }
 ```
 
-## Add Pictures # TO DO
-**You send:**  Your `session` cookie and 1 to 5 forms inputs with `enctype=multipart/form-data` and an `<input type=file>`.  
+## Add Picture
+**You send:**  Your `session` cookie and a form input named `file` with `enctype=multipart/form-data` and an `<input type=file>`.  
 **You get:** The full JSON encoded profile of the connected user.
 
 **Request:**
@@ -182,25 +182,35 @@ Content-Type: multipart/form-data; boundary=9051914041544843365972754266
 Content-Length: xy
 
 --9051914041544843365972754266
-Content-Disposition: form-data; name="file1"; filename="a.png"
+Content-Disposition: form-data; name="file"; filename="pcachin.png"
 Content-Type: text/plain
 
 *Content of the file*
 
 --9051914041544843365972754266
-Content-Disposition: form-data; name="file2"; filename="a.jpg"
-Content-Type: text/html
-
-*Content of the file*
-
---9051914041544843365972754266--
 ```
 **Successful Response:**
 ```json
 HTTP/1.1 201 OK
 Content-Type: application/json
 {
-    "new_picture": "http://{url:port}/data/pcachin.jpg"
+    "bio": "Je suis caché",
+    "email": "pcachin@gmail.com",
+    "first_name": "updated",
+    "id": 1,
+    "last_name": "cachin",
+    "orientation": null,
+    "pictures": [
+        "http://{url:port}/pictures/33_pcachin.jpg"
+    ],
+    "score": 42.0,
+    "sex": "m",
+    "validated": 1,
+    "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
+    "lon": 45.454646545,
+    "lat": 12.135456464,
+    "age": 21,
+    "tags": ["enfants", "sucette", "peignoir"]
 }
 ```
 
