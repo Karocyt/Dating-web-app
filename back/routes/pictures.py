@@ -45,15 +45,6 @@ def new_picture(user):
     user.update({'pictures': pictures})
     return success(user.dict, 201)
 
-@private_pictures.route("/swap_pictures", methods=["POST"])
-@payload_required
-@user_required
-def swap_pictures(payload, user):
-    """
-    Swap pictures order in pictures list, returns pictures list on success
-    """
-    return success(user.pictures)
-
 @private_pictures.route("/pictures/<path:filename>", methods=["DELETE"])
 @user_required
 def del_picture(filename, user):

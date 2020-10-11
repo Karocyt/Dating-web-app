@@ -130,9 +130,10 @@ Content-Type: application/json
 ```
 
 ## Update
-**You send:**  Your `session` cookie and all the json encoded fields to edit (except pictures).  
+**You send:**  Your `session` cookie and all the json encoded fields to edit.  
 **You get:** The full JSON encoded profile of the connected user.
 
+This endpoint can be used to load external pictures or change pictures order.
 If `email` is changed, this call will unvalidate the user and send a new validation link. (TO DO)
 
 **Request:**
@@ -172,7 +173,7 @@ Content-Type: application/json
 
 ## Add Picture
 **You send:**  Your `session` cookie and a form input named `file` with `enctype=multipart/form-data` and an `<input type=file>`.  
-**You get:** The full JSON encoded profile of the connected user.
+**You get:** The full JSON encoded profile of the connected user
 
 **Request:**
 ```json
@@ -199,7 +200,7 @@ Content-Type: application/json
     "first_name": "updated",
     "id": 1,
     "last_name": "cachin",
-    "orientation": null,
+    "orientation": "bisexual",
     "pictures": [
         "http://{url:port}/pictures/33_pcachin.jpg"
     ],
@@ -214,9 +215,9 @@ Content-Type: application/json
 }
 ```
 
-## Delete Picture # TO DO
-**You send:**  Your `session` cookie and 2 forms inputs: `picture_order` (1 to 5) and a .  
-**You get:** A confirmation.
+## Delete Picture
+**You send:**  Your `session` cookie  
+**You get:** The full JSON encoded profile of the connected user
 
 **Request:**
 ```json
@@ -228,41 +229,13 @@ Cookie: session=eyJfcGVybWFuZW50Ijp0cnVlLCJ1c2VyIjoxfQ.X1Uwog.BBHCto1CAuJj_9RLJ0
 HTTP/1.1 200 OK
 Content-Type: application/json
 {
-    "pcachin": true
-}
-```
-
-## Swap Pictures # TO DO
-**You send:**  Your `session` cookie and 2 json integer fields `from` and `to` (1 to 5).  
-**You get:** The full JSON encoded profile of the connected user.
-
-If `email` is changed, this call will unvalidate the user and send a new validation link. (TO DO)
-
-**Request:**
-```json
-PUT <picture_path> HTTP/1.1
-Cookie: session=eyJfcGVybWFuZW50Ijp0cnVlLCJ1c2VyIjoxfQ.X1Uwog.BBHCto1CAuJj_9RLJ0g5kPHgtbU
-Content-Type: application/json
-{
-    "from": 1,
-    "to": 2 
-}
-```
-**Successful Response:**
-```json
-HTTP/1.1 200 OK
-Content-Type: application/json
-{
     "bio": "Je suis caché",
     "email": "pcachin@gmail.com",
     "first_name": "updated",
     "id": 1,
     "last_name": "cachin",
-    "orientation": null,
-    "pictures": [
-        "/data/gikghks.jpg",
-        "/data/pcachin.jpg",
-    ],
+    "orientation": "bisexual",
+    "pictures": [],
     "score": 42.0,
     "sex": "m",
     "validated": 1,
