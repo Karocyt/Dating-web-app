@@ -38,6 +38,7 @@ def create_app():
     app.register_blueprint(users_list)
     app.register_blueprint(reset_password)
     app.register_blueprint(list_tags)
+    app.register_blueprint(private_pictures)
    
     return app
     
