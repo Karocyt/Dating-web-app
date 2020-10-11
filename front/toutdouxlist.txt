@@ -4,8 +4,8 @@
 [OK] enregistrer les users a la creation
 [OK] Recuperer la liste des users
 [OK] Creer une classe de type Users
-[  ] L integrer dans la fonction user-list afin de charger la liste des users
-[  ] Afficher la liste des users
+[OK] L integrer dans la fonction user-list afin de charger la liste des users
+[OK] Afficher la liste des users
 [  ] Afficher un user quand on clique dessus
-[  ] Afficher mon profil
+[OK] Afficher mon profil
 [  ] Modifier mon profil

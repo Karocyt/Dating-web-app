@@ -134,6 +134,18 @@ const UserList = () => {
         <div className="col-lg-9" style={{ top: "50px" }}>
           <div className="card">
             <div className="card-body">
+            <ul className="nav nav-tabs">
+              <li className="nav-item">
+                <a class="nav-link active" href="#">Vue globales</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Ça va matché ! </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Carte</a>
+              </li>
+            </ul> 
+            <br/>
               <div className="row">
                 {users && users.map((user) => (
                       <UserCard user={user} key={user.id} borderColorHover={getGenderColor(user.sex)}/>
