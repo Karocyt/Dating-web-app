@@ -176,7 +176,7 @@ Content-Type: application/json
 
 **Request:**
 ```json
-PUT /profile HTTP/1.1
+POST /add_picture HTTP/1.1
 Cookie: session=eyJfcGVybWFuZW50Ijp0cnVlLCJ1c2VyIjoxfQ.X1Uwog.BBHCto1CAuJj_9RLJ0g5kPHgtbU
 Content-Type: multipart/form-data; boundary=9051914041544843365972754266
 Content-Length: xy
@@ -197,27 +197,10 @@ Content-Type: text/html
 ```
 **Successful Response:**
 ```json
-HTTP/1.1 200 OK
+HTTP/1.1 201 OK
 Content-Type: application/json
 {
-    "bio": "Je suis caché",
-    "email": "pcachin@gmail.com",
-    "first_name": "updated",
-    "id": 1,
-    "last_name": "cachin",
-    "orientation": null,
-    "pictures": [
-        "/data/pcachin.jpg",
-        "/data/gikghks.jpg",
-    ],
-    "score": 42.0,
-    "sex": "m",
-    "validated": 1,
-    "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
-    "lon": 45.454646545,
-    "lat": 12.135456464,
-    "age": 21,
-    "tags": ["enfants", "sucette", "peignoir"]
+    "new_picture": "http://{url:port}/data/pcachin.jpg"
 }
 ```
 
