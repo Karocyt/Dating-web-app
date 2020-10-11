@@ -16,6 +16,7 @@ def create_app():
     app = Flask(__name__, instance_relative_config=False)
     
     app.secret_key = "Blablabla"
+    app.debug = True
     
     app.config['MAIL_SERVER']='smtp.gmail.com'
     app.config['MAIL_PORT'] = 465

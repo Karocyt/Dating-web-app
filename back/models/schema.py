@@ -72,8 +72,8 @@ class Schema:
         date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
         
         PRIMARY KEY (user_id, reported),
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-        FOREIGN KEY (reported) REFERENCES users(id) ON DELETE CASCADE
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (reported) REFERENCES users(id)
         ) ENGINE=InnoDB;
         """
 
@@ -88,8 +88,8 @@ class Schema:
         date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
         
         PRIMARY KEY (user_id, visited),
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-        FOREIGN KEY (visited) REFERENCES users(id) ON DELETE CASCADE
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (visited) REFERENCES users(id)
         ) ENGINE=InnoDB;
         """
 
@@ -104,8 +104,8 @@ class Schema:
         date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
         
         PRIMARY KEY (user_id, liked),
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-        FOREIGN KEY (liked) REFERENCES users(id) ON DELETE CASCADE
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (liked) REFERENCES users(id)
         ) ENGINE=InnoDB;
         """
 
@@ -120,7 +120,7 @@ class Schema:
         date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
         
         PRIMARY KEY (user_id),
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        FOREIGN KEY (user_id) REFERENCES users(id)
         ) ENGINE=InnoDB;
         """
 
@@ -135,7 +135,7 @@ class Schema:
         date timestamp DEFAULT NOW() NOT NULL,
         
         PRIMARY KEY (user_id),
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        FOREIGN KEY (user_id) REFERENCES users(id)
         ) ENGINE=InnoDB;
         """
 
@@ -150,8 +150,8 @@ class Schema:
         date timestamp DEFAULT NOW() NOT NULL,
         
         PRIMARY KEY (user_id, blocked),
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-        FOREIGN KEY (blocked) REFERENCES users(id) ON DELETE CASCADE
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (blocked) REFERENCES users(id)
         ) ENGINE=InnoDB;
         """
 
@@ -187,5 +187,14 @@ class Schema:
 
     @retry(retry_on_exception=retry_on_db_error, wait_fixed=1000, stop_max_attempt_number=3)
     def exec(self, query, args=()):
-        self.cur.execute(query, args)
-        return True
+        with mariadb.connect(**self.config) as conn:
+            with conn.cursor() as cur:
+                cur.execute(query, args)
+                return cur.lastrowid
+
+    @retry(retry_on_exception=retry_on_db_error, wait_fixed=1000, stop_max_attempt_number=3)
+    def fetch(self, query, args=()):
+        with mariadb.connect(**self.config) as conn:
+            with conn.cursor() as cur:
+                cur.execute(query, args)
+                return cur.fetchall()
