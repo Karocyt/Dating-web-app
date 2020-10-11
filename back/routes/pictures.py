@@ -58,9 +58,11 @@ def swap_pictures(payload, user):
 @user_required
 def del_picture(filename, user):
     """
-    Returns a user picture to logged in users
+    Delete a user picture
     """
-    return send_from_directory(
-        os.path.join(private_pictures.instance_path, 'pictures'),
-        os.path.join('/data', filename)
-    )
+    pic_path = f"{public_host}/pictures/{filename}"
+    pictures = user.pictures
+    pictures.remove(pic_path)
+    user.update({'pictures': pictures})
+    os.remove(os.path.join("/data", filename))
+    return success(user.dict)
