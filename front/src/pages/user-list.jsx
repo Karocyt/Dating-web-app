@@ -7,8 +7,8 @@ import getGenderColor from "../helpers/get-gender-color";
 
 import axios from "axios";
 
-const UserList: FunctionComponent = () => {
-  const [users, setUSers] = useState<User[]>([]);
+const UserList = () => {
+  const [users, setUSers] = useState([]);
 
   useEffect(() => {
     (async function () {
@@ -17,8 +17,7 @@ const UserList: FunctionComponent = () => {
         .then((res) => {
           //console.log("SuCcEsS:");
           //console.log(res)
-          setUSers(res.data);
-          //alert("sucess_get_users");
+          setUSers(res.data.users);
         })
         .catch(function (error) {
           console.log(error);
@@ -136,19 +135,18 @@ const UserList: FunctionComponent = () => {
           <div className="card">
             <div className="card-body">
               <div className="row">
-                {/*users && users.map((user: User) => (
-                        <UserCard user={user} key={user.id} borderColorHover={getGenderColor(user.sex)}/>
-                    ))*/}
+                {users && users.map((user) => (
+                      <UserCard user={user} key={user.id} borderColorHover={getGenderColor(user.sex)}/>
+                    )
+                  )
+                }
                 {users && users[0] && (
                   <UserCard
                     user={users[0]}
                     key={users[0].id}
                     borderColorHover={getGenderColor(users[0].sex)}
                   />
-                )}
-                {(users && users[0] && (
-                  <div>FIRST USER IS : {users[0].first_name}</div>
-                )) || <div>No UsEr !</div>}
+                ) || <div>No UsEr !</div>}
               </div>
             </div>
           </div>
