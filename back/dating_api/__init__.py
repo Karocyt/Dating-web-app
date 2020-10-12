@@ -15,4 +15,3 @@ db = Schema(config)
 public_host = os.environ['REACHABLE_HOST']
 
 mail = False
-
