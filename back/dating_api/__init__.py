@@ -1,4 +1,5 @@
 import os
+from flask_socketio import SocketIO
 
 from .models.schema import Schema
 
@@ -15,3 +16,5 @@ db = Schema(config)
 public_host = os.environ['REACHABLE_HOST']
 
 mail = False
+
+socketio = SocketIO()
