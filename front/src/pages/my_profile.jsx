@@ -11,13 +11,13 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import axios from 'axios';
 
 
-const MyProfile: FunctionComponent = () => {
+const MyProfile = ({send_picture}) => {
     
 
   const history = useHistory()
 
 
-  const [user, setUser] = useState<User[]|[]>([]);
+  const [user, setUser] = useState([]);
 
   useEffect(() => {
     setMy_profile_loader(true)
@@ -44,13 +44,13 @@ const MyProfile: FunctionComponent = () => {
 }, [])
 
 
-const [my_profile_loader, setMy_profile_loader] = useState<boolean>(true);
+const [my_profile_loader, setMy_profile_loader] = useState(true);
 
-const [my_profile_first_name, setMy_profile_first_name] = useState<string>("");
-const [my_profile_last_name, setMy_profile_last_name] = useState<string>("");
-const [my_profile_age, setMy_profile_age] = useState<number>(0);
-const [my_profile_bio, setMy_profile_bio] = useState<string>("");
-const [my_profile_sex, setMy_profile_sex] = useState<string>("");
+const [my_profile_first_name, setMy_profile_first_name] = useState("");
+const [my_profile_last_name, setMy_profile_last_name] = useState("");
+const [my_profile_age, setMy_profile_age] = useState(0);
+const [my_profile_bio, setMy_profile_bio] = useState("");
+const [my_profile_sex, setMy_profile_sex] = useState("");
 
   const send_modification = () => {
     setMy_profile_loader(true);
@@ -109,6 +109,13 @@ const [my_profile_sex, setMy_profile_sex] = useState<string>("");
                 <div className="card-content">
                   <table className="bordered striped">
                     <tbody>
+                      <tr> 
+                        <td>Ajouter une photo</td> 
+                        <td>
+                          <label htmlFor="myfile">Select a file:</label>
+                          <input type="file" onChange={(e) => {console.log(e.target);alert(e.target.value);send_picture(e.target.files[0])}} id="myFile" name="myFile"/>
+                          </td> 
+                      </tr>
                       <tr> 
                         <td>Prénom</td> 
                         <td><input type="text" onChange={(e) => setMy_profile_first_name(e.target.value)} value={my_profile_first_name}></input></td> 

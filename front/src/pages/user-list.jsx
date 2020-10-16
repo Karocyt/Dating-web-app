@@ -45,7 +45,7 @@ const UserList = () => {
         .then((res) => {
           console.log("SuCcEsS:");
           console.log(res.data)
-          alert("GeT MaTcHeS");
+          //alert("GeT MaTcHeS");
           //setUSers(res.data.users);
         })
         .catch(function (error) {
@@ -148,7 +148,7 @@ const UserList = () => {
                 <a className={frame == 0 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => setFrame(0)}>Vue globales</a>
               </li>
               <li className="nav-item">
-                <a className={frame == 1 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => setFrame(1)}>Ça va matché ! </a>
+                <a className={frame == 1 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => setFrame(1)}>Mes matchs</a>
               </li>
               <li className="nav-item">
                 <a className={frame == 2 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => setFrame(2)} >Carte</a>

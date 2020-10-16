@@ -15,6 +15,7 @@ import PageNotFound from './pages/page-not-found'
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { JSDocUnknownType } from 'typescript';
 
 
 const App: FunctionComponent = () => {
@@ -89,6 +90,69 @@ const App: FunctionComponent = () => {
         });
   }
 
+  const like_management = (user_id : String) => {
+    axios.post('/users/' + user_id,
+    {
+      "like" : true
+    })
+    .then(res => {
+        console.log(res);
+        console.log(res.data);
+        toast.success("Vous avez bien liké :)");
+    })
+    .catch(function (error) {
+          // console.log(error.response.data);
+          // console.log(error.response.status);
+          console.log(error);
+        toast.error(error);
+      });
+  }
+
+
+  const send_picture = (picture : any) => {
+                    /*//if we didnd't already have the "fileInput" var in scope, we could use "event.target" to get it
+                    if(picture.length>=1) {
+                      //In this example, I'm putting the selected file's name in the title. You don't need to do this
+                      document.title = picture.name;
+                      downloadAnchor.setAttribute("download","edited_"+picture.name);
+                  }
+                  else {
+                      document.title = "FileReader Example";
+                      downloadAnchor.setAttribute("download","edited_file.txt");
+                  }
+                  var fr = new FileReader();
+                  fr.readAsText(picture);
+                  fr.onload = function (event) {
+                      //Both "event.target.result" and "fr.result" contain the file's contents (because "event.target" is === "fr")
+  
+                      textArea.value = event.target.result;
+                      // OR
+                      //textArea.value = fr.result;
+                  }*/
+
+         //         console.log(picture)
+    //alert('send')
+    var bodyFormData = new FormData();
+    bodyFormData.append('file', picture); 
+    axios({
+      method: 'post',
+      url: '/add_picture',
+      data: bodyFormData,
+      headers: {'Content-Type': 'multipart/form-data' }
+      })
+    .then(res => {
+        console.log(res);
+        console.log(res.data);
+        toast.success("Vous avez Envoyé votre photo !");
+    })
+    .catch(function (error) {
+          // console.log(error.response.data);
+          // console.log(error.response.status);
+          console.log(error);
+        toast.error(error);
+      });
+  }
+
     const [IsLogged, setIsLogged] = useState<Boolean>(false);
     const [IsLoad, setIsLoad] = useState<Boolean>(false);
 
@@ -118,9 +182,9 @@ const App: FunctionComponent = () => {
             <div>
                 <Switch>
                     <Route exact path="/" component={() => !IsLogged&&<Home login={login} signup={signup}/>||<UserList/>}/>
-                    <Route exact path="/my_profile" component={() => IsLogged && <MyProfile /> || <Home login={login} signup={signup}/>}/>
+                    <Route exact path="/my_profile" component={() => IsLogged && <MyProfile send_picture={send_picture} /> || <Home login={login} signup={signup}/>}/>
                     <Route exact path="/users" component={() => IsLogged && <UserList/> || <Home login={login} signup={signup}/>}/>
-                    <Route path="/users/:id" component={() => IsLogged && <UserDetail/> || <Home login={login} signup={signup}/> }/>
+                    <Route path="/users/:id" component={() => IsLogged && <UserDetail like_management={like_management}/> || <Home login={login} signup={signup}/> }/>
                     <Route component={PageNotFound}/>
                 </Switch>
                 {IsLogged && <Chat_widget />}

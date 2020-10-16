@@ -12,7 +12,7 @@ import axios from 'axios';
 import { useRouteMatch } from "react-router-dom";
   
 
-const UsersDetail = () => {
+const UsersDetail = ({like_management}) => {
 
   let match = useRouteMatch("/users/:id");
   const history = useHistory()
@@ -52,6 +52,10 @@ const [my_profile_loader, setMy_profile_loader] = useState(true);
                 <div className="card-content">
                   <table className="bordered striped">
                     <tbody>
+                      <tr> 
+                        <td><i className="far fa-heart"> </i></td> 
+                        <td><i onClick={() => like_management(match.params.id)} className="fa fa-heart"> </i></td> 
+                      </tr>
                       <tr> 
                         <td>Prénom</td> 
                         <td>{user[0].first_name}</td> 
