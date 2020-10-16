@@ -454,7 +454,7 @@ class User():
         age_max = 99
         score_min = 0
         score_max = 100
-        distance_max = 500 # km
+        distance_max = 50000 # km
         tags = []
         if "age" in payload:
             age_min = payload["age"]["min"]
@@ -480,6 +480,7 @@ class User():
                 u.age >= ?
                 AND u.age <= ?
                 AND u.validated=1
+                AND st_distance(POINT(u.lat, u.lon), POINT(?, ?)) * 111 <= ?
             """
         if len(tags) > 0:
             tags_query = []
@@ -491,7 +492,7 @@ class User():
             query += " AND (" + junc.join(tags_query) + ")"
 
 
-        rows = db.fetch(query, (age_min, age_max, *tags))
+        rows = db.fetch(query, (age_min, age_max, self.lat, self.lon, distance_max, *tags))
 
         return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
         
