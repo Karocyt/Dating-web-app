@@ -12,7 +12,6 @@ def test_upload():
     print("201 OK", flush=True)
     profile = response.json()
     print(profile, flush=True)
-    assert 1 == 2
     pic_true_url = profile["pictures"][-1]
     assert os.path.exists(os.path.join("/data", pic_true_url.split('/')[-1]))
     pic_url = f"http://app:5000/pictures/{pic_true_url.split('/')[-1]}"

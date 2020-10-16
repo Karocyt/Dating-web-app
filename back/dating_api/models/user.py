@@ -293,24 +293,24 @@ class User():
                 *
             FROM users
             INNER JOIN likes
-            ON users.id = likes.liked
-                AND likes.user_id = ?
-            """
-        rows = db.fetch(query, (self.id,))
-        return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
-    
-    @property
-    def liked_list(self):
-        query = """
-            SELECT
-                *
-            FROM users
-            INNER JOIN likes
             ON users.id = likes.user_id
                 AND likes.liked = ?
             """
         rows = db.fetch(query, (self.id,))
         return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
+    
+    # @property
+    # def liked_list(self):
+    #     query = """
+    #         SELECT
+    #             *
+    #         FROM users
+    #         INNER JOIN likes
+    #         ON users.id = likes.user_id
+    #             AND likes.liked = ?
+    #         """
+    #     rows = db.fetch(query, (self.id,))
+    #     return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
     
     @property
     def visits_list(self):
@@ -448,3 +448,50 @@ class User():
         params = tuple(i for t in params for i in t)
         # print(params, [t.name for t in tags])
         db.exec(query, params)
+
+    def search(self, payload):
+        age_min = 18
+        age_max = 99
+        score_min = 0
+        score_max = 100
+        distance_max = 500 # km
+        tags = []
+        if "age" in payload:
+            age_min = payload["age"]["min"]
+            age_max = payload["age"]["max"]
+        if "score" in payload:
+            score_min = payload["score"]["min"]
+            score_max = payload["score"]["max"]
+        if "distance" in payload:
+            distance_max = payload["distance"]
+        if "tags" in payload:
+            tags = payload["tags"]
+
+        query = """
+            SELECT
+                u.*
+            FROM
+                users u
+                LEFT JOIN user_tags ut
+                    ON ut.user_id = u.id
+                LEFT JOIN tags t
+                    ON t.id = ut.tag_id
+            WHERE
+                u.age >= ?
+                AND u.age <= ?
+                AND u.validated=1
+            """
+        if len(tags) > 0:
+            tags_query = []
+            junc = " "
+            for t in tags:
+                tags_query.append("t.name=?")
+            if len(tags) > 1:
+                junc = " OR "
+            query += " AND (" + junc.join(tags_query) + ")"
+
+
+        rows = db.fetch(query, (age_min, age_max, *tags))
+
+        return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
+        

@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 
-from ..utils.decorators import (jsonify_output, validated_required)
+from ..utils.decorators import (jsonify_output, validated_required, payload_required)
 
 users_list = Blueprint("users_list", __name__)
 
@@ -32,14 +32,14 @@ def get_liked_by(user):
     """
     return {"users": [x for x in user.liked_by_list]}
 
-@users_list.route("/liked", methods=["GET"])
-@jsonify_output
-@validated_required
-def get_likes(user):
-    """
-    List people you liked as an array of full json encoded profiles
-    """
-    return {"users": [x for x in user.liked_list]}
+# @users_list.route("/liked", methods=["GET"])
+# @jsonify_output
+# @validated_required
+# def get_likes(user):
+#     """
+#     List people you liked as an array of full json encoded profiles
+#     """
+#     return {"users": [x for x in user.liked_list]}
 
 @users_list.route("/visits", methods=["GET"])
 @jsonify_output
@@ -55,8 +55,23 @@ def get_visits(user):
 @jsonify_output
 @validated_required
 @payload_required
-def search_users(user):
+def search_users(user, payload):
     """
-    List visits as an array of full json encoded profiles
+    List users according to search parameters as an array of full json encoded profiles
+    Possible search parameters:
+    {
+        "age": {
+            "min": 18,
+            "max": 99
+        },
+        "score": {
+            "min": 0,
+            "max": 100
+        },
+        "distance": 15,
+        "tags": ["artist", "420"]
+    }
     """
-    return {"users": [x for x in user.visits_list]}
+    
+
+    return {"users": [x for x in user.search(payload)]}
