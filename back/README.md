@@ -400,26 +400,13 @@ Content-Type: application/json
 ```
 
 ## Matches
-**You send:**  Your `session` cookie and optionnal search parameters.  
+**You send:**  Your `session` cookie.  
 **You get:** A JSON encoded list of users
 
 **Request:**
 ```json
 GET /matches HTTP/1.1
 Cookie: session=eyJfcGVybWFuZW50Ijp0cnVlLCJ1c2VyIjoxfQ.X1Uwog.BBHCto1CAuJj_9RLJ0g5kPHgtbU
-Content-Type: application/json
-{
-    "age": {
-        "min": 18,
-        "max": 99
-    },
-    "score": {
-        "min": 0,
-        "max": 100
-    },
-    "distance": 15,
-    "tags": ["artist", "420"]
-}
 ```
 **Successful Response:**
 ```json
@@ -452,26 +439,13 @@ Content-Type: application/json
 ```
 
 ## Liked by
-**You send:**  Your `session` cookie and optionnal search parameters.  
+**You send:**  Your `session` cookie.  
 **You get:** A JSON encoded list of users who like you (including matches)
 
 **Request:**
 ```json
 GET /liked_by HTTP/1.1
 Cookie: session=eyJfcGVybWFuZW50Ijp0cnVlLCJ1c2VyIjoxfQ.X1Uwog.BBHCto1CAuJj_9RLJ0g5kPHgtbU
-Content-Type: application/json
-{
-    "age": {
-        "min": 18,
-        "max": 99
-    },
-    "score": {
-        "min": 0,
-        "max": 100
-    },
-    "distance": 15,
-    "tags": ["artist", "420"]
-}
 ```
 **Successful Response:**
 ```json

@@ -456,28 +456,42 @@ class User():
         score_max = 100
         distance_max = 50000 # km
         tags = []
-        if "age" in payload:
-            age_min = payload["age"]["min"]
-            age_max = payload["age"]["max"]
-        if "score" in payload:
-            score_min = payload["score"]["min"] / 100.0
-            score_max = payload["score"]["max"] / 100.0
-        if "distance" in payload:
-            distance_max = payload["distance"]
-        if "tags" in payload:
-            tags = payload["tags"]
+        if type(payload) is dict:
+            if "age" in payload:
+                age_min = payload["age"]["min"]
+                age_max = payload["age"]["max"]
+            if "score" in payload:
+                score_min = payload["score"]["min"] / 100.0
+                score_max = payload["score"]["max"] / 100.0
+            if "distance" in payload:
+                distance_max = payload["distance"]
+            if "tags" in payload:
+                tags = payload["tags"]
 
         query = """
             SELECT
                 u.*
             FROM
                 users u
+                LEFT OUTER JOIN (likes a
+                    INNER JOIN likes b
+                        ON a.user_id = b.liked
+                        AND a.liked = b.user_id
+                        AND b.user_id=?)
+                    ON u.id = a.user_id
+                LEFT OUTER JOIN blocks
+                    ON u.id = blocks.user_id
+                    AND blocks.blocked=?
                 LEFT JOIN user_tags ut
                     ON ut.user_id = u.id
                 LEFT JOIN tags t
                     ON t.id = ut.tag_id
             WHERE
-                u.age >= ?
+                blocks.user_id IS NULL
+                AND b.user_id IS NULL
+                AND u.validated=1
+                AND u.id != ?
+                AND u.age >= ?
                 AND u.age <= ?
                 AND u.validated=1
                 AND st_distance(POINT(u.lat, u.lon), POINT(?, ?)) * 111 <= ?
@@ -494,7 +508,7 @@ class User():
             query += " AND (" + junc.join(tags_query) + ")"
 
 
-        rows = db.fetch(query, (age_min, age_max, self.lat, self.lon, distance_max, score_min, score_max, *tags))
+        rows = db.fetch(query, (self.id, self.id, self.id, age_min, age_max, self.lat, self.lon, distance_max, score_min, score_max, *tags))
 
         return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
         
