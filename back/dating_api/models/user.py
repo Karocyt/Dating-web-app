@@ -460,8 +460,8 @@ class User():
             age_min = payload["age"]["min"]
             age_max = payload["age"]["max"]
         if "score" in payload:
-            score_min = payload["score"]["min"]
-            score_max = payload["score"]["max"]
+            score_min = payload["score"]["min"] / 100.0
+            score_max = payload["score"]["max"] / 100.0
         if "distance" in payload:
             distance_max = payload["distance"]
         if "tags" in payload:
@@ -481,6 +481,8 @@ class User():
                 AND u.age <= ?
                 AND u.validated=1
                 AND st_distance(POINT(u.lat, u.lon), POINT(?, ?)) * 111 <= ?
+                AND u.likes_count / (0.5 * ((u.views_count + 1) + ABS(u.views_count - 1))) >= ?
+                AND u.likes_count / (0.5 * ((u.views_count + 1) + ABS(u.views_count - 1))) <= ?
             """
         if len(tags) > 0:
             tags_query = []
@@ -492,7 +494,7 @@ class User():
             query += " AND (" + junc.join(tags_query) + ")"
 
 
-        rows = db.fetch(query, (age_min, age_max, self.lat, self.lon, distance_max, *tags))
+        rows = db.fetch(query, (age_min, age_max, self.lat, self.lon, distance_max, score_min, score_max, *tags))
 
         return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
         
