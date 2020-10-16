@@ -17,7 +17,7 @@ const Navbar: FunctionComponent<Props> = ({logout}) => {
             <div className="collapse navbar-collapse" id="navbar">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item active">
-                        <a href="#" className="nav-link">
+                        <a href="/mailbox" className="nav-link">
                         <i className="fa fa-envelope"> </i>
                         {/*<i className="fa fa-envelope-open"> </i>*/}
                         </a>
@@ -43,6 +43,7 @@ const Navbar: FunctionComponent<Props> = ({logout}) => {
                         <i className="fa fa-user-circle"> </i> </a>
                         <div className="dropdown-menu dropdown-menu-right dropdown-cyan" aria-labelledby="navbarDropdownMenuLink-4">
                             <a className="dropdown-item" href="/my_profile">Mon profil</a>
+                            <a className="dropdown-item" href="/my_profile">Mon compte</a>
                             <a className="dropdown-item" style={{backgroundColor:"#ff0000", color:"white"}} onClick={() => logout()}>Se déconnecter</a>
                         </div>
                     </li>

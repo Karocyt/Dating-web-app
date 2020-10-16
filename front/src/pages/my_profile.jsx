@@ -103,7 +103,7 @@ const [my_profile_sex, setMy_profile_sex] = useState("");
             <h2 className="header center">{ user[0].first_name }</h2>
             <div className="card hoverable"> 
               <div className="card-image">
-                <img src={user[0].pictures[0]} alt={user[0].first_name} style={{width: '250px', margin: '0 auto'}}/>
+                <img src={user[0].pictures[1]} alt={user[0].first_name} style={{width: '250px', margin: '0 auto'}}/>
               </div>
               <div className="card-stacked">
                 <div className="card-content">

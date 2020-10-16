@@ -8,9 +8,10 @@ type Props = {
         firstname:String,
         lastname:String
     ) => void;
+    forget_password: (email:String) => void;
 };
 
-const Home: FunctionComponent<Props> = ({login, signup}) => {
+const Home: FunctionComponent<Props> = ({login, signup, forget_password}) => {
     //console.log(login);
     const [signinUsername, setSigninUsername] = useState('');
     const [signinPassword, setSigninPassword] = useState('');
@@ -74,6 +75,7 @@ const Home: FunctionComponent<Props> = ({login, signup}) => {
                                 </div>
                             </div>
                             <div className="modal-footer">
+                                <button onClick={() => forget_password(signinUsername)} type="button" className="btn btn-warning" data-dismiss="modal">Mot de passe oublié</button>
                                 <button onClick={() => login(signinUsername, signinPassword)} type="button" className="btn btn-success" data-dismiss="modal">Valider</button>
                             </div> 
                         </div>

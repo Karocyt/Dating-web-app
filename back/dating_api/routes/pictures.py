@@ -10,8 +10,7 @@ from ..utils.misc import success, error
 private_pictures = Blueprint("private_pictures", __name__)
 
 @private_pictures.route("/pictures/<path:filename>", methods=["GET"])
-@user_required
-def get_picture(filename, user):
+def get_picture(filename):
     """
     Returns a user picture to logged in users
     """

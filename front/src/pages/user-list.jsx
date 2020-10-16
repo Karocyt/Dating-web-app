@@ -14,19 +14,23 @@ import axios from "axios";
 const UserList = () => {
   const [users, setUSers] = useState([]);
 
+const get_user_list = (path) => {
+  axios
+  .get(path)
+  .then((res) => {
+    //console.log("SuCcEsS:");
+    console.log(res)
+    setUSers(res.data.users);
+  })
+  .catch(function (error) {
+    console.log(error);
+    //alert("error_get_users");
+  });
+}
+
   useEffect(() => {
     (async function () {
-      axios
-        .get("/users")
-        .then((res) => {
-          //console.log("SuCcEsS:");
-          //console.log(res)
-          setUSers(res.data.users);
-        })
-        .catch(function (error) {
-          console.log(error);
-          //alert("error_get_users");
-        });
+      get_user_list("/users");
     })();
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(getPosition);
@@ -40,23 +44,16 @@ const UserList = () => {
   //const [users, setUSers] = useState([]);
   useEffect(() => {
     (async function () {
-      axios
-        .get("/matches")
-        .then((res) => {
-          console.log("SuCcEsS:");
-          console.log(res.data)
-          //alert("GeT MaTcHeS");
-          //setUSers(res.data.users);
-        })
-        .catch(function (error) {
-          console.log(error);
-          //alert("error_get_users");
-        });
+      get_user_list("/matches");
     })();
   }, []);
 
   const [geoloc_pos, setGeoloc_pos] = useState([]);
   const [frame, setFrame] = useState(0);
+
+  const get_like = () => {
+    get_user_list("/liked_by");
+  }
 
   return (
     <div className="container-fluid">
@@ -145,13 +142,19 @@ const UserList = () => {
             <div className="card-body">
             <ul className="nav nav-tabs">
               <li className="nav-item">
-                <a className={frame == 0 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => setFrame(0)}>Vue globales</a>
+                <a className={frame == 0 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => {setFrame(0);get_user_list("/users")}}>Vue globales</a>
               </li>
               <li className="nav-item">
-                <a className={frame == 1 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => setFrame(1)}>Mes matchs</a>
+                <a className={frame == 1 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => {setFrame(1);get_user_list("/matches")}}>Mes matchs</a>
               </li>
               <li className="nav-item">
                 <a className={frame == 2 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => setFrame(2)} >Carte</a>
+              </li>
+              <li className="nav-item">
+                <a className={frame == 3 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => {setFrame(3);get_user_list("/liked_by")}} >Mes likes</a>
+              </li>
+              <li className="nav-item">
+                <a className={frame == 4 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => setFrame(4)} >Mes personnes blockées</a>
               </li>
             </ul> 
             <br/>
@@ -165,10 +168,14 @@ const UserList = () => {
                 }
               </div>
               : frame == 1 ?
-              <div>
-                Match
+              <div className="row">
+                {users && users.map((user) => (
+                      <UserCard user={user} key={user.id} borderColorHover={getGenderColor(user.sex)}/>
+                    )
+                  )  || <div>No UsEr !</div>
+                }
               </div>
-              :
+              : frame == 2 ?
                 <Map center={geoloc_pos} zoom={12} width={600} height={400}>
                 <Marker anchor={geoloc_pos} payload={1} onClick={({ event, anchor, payload }) => {}} />
             
@@ -176,6 +183,16 @@ const UserList = () => {
                   <img src='https://cdn.intra.42.fr/users/medium_pcachin.jpg' width={24} height={15} alt='' />
                 </Overlay>
               </Map>
+              : frame == 3 ?
+              <div className="row">
+                {users && users.map((user) => (
+                      <UserCard user={user} key={user.id} borderColorHover={getGenderColor(user.sex)}/>
+                    )
+                  )  || <div>No UsEr !</div>
+                }
+              </div>
+              :
+              <div>OK</div>
               }
             </div>
           </div>
