@@ -293,6 +293,19 @@ class User():
                 *
             FROM users
             INNER JOIN likes
+            ON users.id = likes.liked
+                AND likes.user_id = ?
+            """
+        rows = db.fetch(query, (self.id,))
+        return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
+    
+    @property
+    def liked_list(self):
+        query = """
+            SELECT
+                *
+            FROM users
+            INNER JOIN likes
             ON users.id = likes.user_id
                 AND likes.liked = ?
             """
