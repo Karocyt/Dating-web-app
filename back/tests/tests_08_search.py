@@ -33,3 +33,31 @@ def test_search():
     assert response.status_code == 200
     profile = user1["session"].get(f"{url}/users/{response.json()['users'][0]['id']}").json()
     assert 'rue' in profile["tags"]
+
+    tmp = update(user1, {'lon': 0.0, 'lat': 0.0})
+    assert tmp.status_code == 200
+    reset(user2)
+    tmp = login(user2)
+    print(tmp.json(), flush=True)
+
+    tmp = update(user2, {'lon': 0.0, 'lat': 1.0, 'tags': ['pcachin'], 'age': 23})
+    print(tmp.json(), flush=True)
+    assert tmp.status_code == 200
+
+    response = user1["session"].get(f"{url}/search",
+                                    json={
+                                            'age': {'min': 23, 'max': 23},
+                                            'tags': ['pcachin'],
+                                            'distance': 130})
+    assert response.status_code == 200
+    print(len(response.json()["users"]))
+    assert len(response.json()["users"]) == 1
+
+    response = user1["session"].get(f"{url}/search",
+                                    json={
+                                            'age': {'min': 22, 'max': 24},
+                                            'tags': ['pcachin'],
+                                            'distance': 100})
+    assert response.status_code == 200
+    assert len(response.json()["users"]) == 0
+
