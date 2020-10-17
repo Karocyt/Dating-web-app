@@ -21,7 +21,7 @@ def get_picture(filename):
 @user_required
 def new_picture(user):
     """
-    Add a picture and returns pictures_list on success
+    Add a picture and returns user profile on success
     """
     def allowed_file(filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in ('bmp', 'png', 'jpg', 'jpeg')
