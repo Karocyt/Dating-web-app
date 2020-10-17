@@ -15,8 +15,46 @@ const Mailbox = () => {
     
 
   return (
-    <div>
-        Mailbox
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col-lg-3" style={{ top: "50px" }}>
+          <div className="list-group" style={{ paddingBottom: "15px" }}>
+            <div className="card">
+              <div className="card-body">
+                  User list
+              </div>
+            </div>
+            <div className="card">
+              <div className="card-body">
+                  User list
+              </div>
+            </div>
+            <div className="card">
+              <div className="card-body">
+                  User list
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-9" style={{ top: "50px" }}>
+          <div className="card">
+            <div className="card-body">
+                Messages
+            </div>
+          </div>
+          <div className="card">
+            <div className="card-body">
+                Messages
+            </div>
+          </div>
+          <div className="card">
+            <div className="card-body">
+                Messages
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

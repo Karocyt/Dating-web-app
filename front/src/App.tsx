@@ -11,6 +11,8 @@ import Home from './pages/home'
 import Mailbox from './pages/mailbox'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
+import My_account from './pages/my_account'
+
 import PageNotFound from './pages/page-not-found'
 
 import axios from 'axios';
@@ -124,15 +126,18 @@ const App: FunctionComponent = () => {
         });
   }
 
-  const like_management = (user_id : String) => {
+  const like_management = (user_id : String, like: Boolean) => {
     axios.post('/users/' + user_id,
     {
-      "like" : true
+      "like" : like
     })
     .then(res => {
         console.log(res);
         console.log(res.data);
-        toast.success("Vous avez bien liké :)");
+        if (like)
+          toast.success("Vous avez bien liké :)");
+        else
+          toast.success("Vous avez bien enlevé le like :)");
     })
     .catch(function (error) {
           // console.log(error.response.data);
@@ -220,6 +225,7 @@ const App: FunctionComponent = () => {
                     <Route exact path="/users" component={() => IsLogged && <UserList/> || <Home login={login} signup={signup} forget_password={forget_password} />}/>
                     <Route path="/users/:id" component={() => IsLogged && <UserDetail like_management={like_management}/> || <Home login={login} signup={signup} forget_password={forget_password} /> }/>
                     <Route exact path="/mailbox" component={() => IsLogged && <Mailbox /> || <Home login={login} signup={signup} forget_password={forget_password}/>}/>
+                    <Route exact path="/my_account" component={() => IsLogged && <My_account /> || <Home login={login} signup={signup} forget_password={forget_password}/>}/>
                     <Route component={PageNotFound}/>
                 </Switch>
                 {IsLogged && <Chat_widget />}

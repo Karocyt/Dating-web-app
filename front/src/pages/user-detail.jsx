@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import User from '../models/user';
-
 //import formatDate from '../helpers/format-date'
 
 import { useHistory } from 'react-router-dom'
@@ -19,12 +18,14 @@ const UsersDetail = ({like_management}) => {
 
 
   const [user, setUser] = useState([]);
+  const [first_picture, setFirst_picture] = useState("");
 
-  useEffect(() => {
+  const get_user = () => {
     setMy_profile_loader(true)
     axios.get(`/users/${match.params.id}`)
     .then(res => {
         setUser(Array(res.data));
+        setFirst_picture(res.data.pictures[0]);
     })
     .catch(function (error) {
         console.log(error)
@@ -32,7 +33,9 @@ const UsersDetail = ({like_management}) => {
       //setIsLoad(true);
     })
     setMy_profile_loader(false);
-
+  }
+  useEffect(() => {
+    get_user()
 }, [])
 
 
@@ -45,24 +48,32 @@ const [my_profile_loader, setMy_profile_loader] = useState(true);
           <div className="col s12 m8 offset-m2"> 
             <h2 className="header center">{ user[0].first_name }</h2>
             <div className="card hoverable"> 
-              <div className="card-image">
-                <img src={user[0].pictures[0]} alt={user[0].first_name} style={{width: '250px', margin: '0 auto'}}/>
+              <div className="card-image" >
+              <img src={user[0].pictures[0]} alt={user[0].pictures[0]} style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "50%"}}/>
+              <div className="row">
+                {
+                  user[0].pictures.map(function (picture) {
+                    return <div key={picture} className="col-2"><img onClick={() => {setFirst_picture(picture);alert(picture)}} src={picture} alt={picture} style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "50%"}}/></div>
+                  })
+                }
+                </div>
+                <div style={{textAlign: "center"}}>
+                {
+                  user[0].liked &&
+                  <i style={{cursor: "pointer", color:"red"}} onClick={() => {like_management(match.params.id, false);get_user()}} className="fa fa-heart fa-2x"> </i>
+                  ||
+                  <i style={{cursor: "pointer", color:"red"}} onClick={() => {like_management(match.params.id, true);get_user()}} className="far fa-heart fa-2x"> </i>
+                }
+                </div>
+
               </div>
               <div className="card-stacked">
                 <div className="card-content">
                   <table className="bordered striped">
                     <tbody>
                       <tr> 
-                        <td><i className="far fa-heart"> </i></td> 
-                        <td><i onClick={() => like_management(match.params.id)} className="fa fa-heart"> </i></td> 
-                      </tr>
-                      <tr> 
                         <td>Prénom</td> 
                         <td>{user[0].first_name}</td> 
-                      </tr>
-                      <tr> 
-                        <td>Nom</td> 
-                        <td>{user[0].last_name}</td> 
                       </tr>
                       <tr> 
                         <td>Age</td> 

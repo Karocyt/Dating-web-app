@@ -10,6 +10,6 @@
 [OK] Afficher mon profil
 [OK] Modifier mon profil
 [  ] Afficher les matchs un par un
-[  ] Afficher la carte interactive des utilisateurs
+[OK] Afficher la carte interactive des utilisateurs
 [  ] Afficher une selectbox pour le genre
 [  ] Creer des tags

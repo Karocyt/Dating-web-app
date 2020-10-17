@@ -51,9 +51,6 @@ const get_user_list = (path) => {
   const [geoloc_pos, setGeoloc_pos] = useState([]);
   const [frame, setFrame] = useState(0);
 
-  const get_like = () => {
-    get_user_list("/liked_by");
-  }
 
   return (
     <div className="container-fluid">
@@ -154,7 +151,7 @@ const get_user_list = (path) => {
                 <a className={frame == 3 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => {setFrame(3);get_user_list("/liked_by")}} >Mes likes</a>
               </li>
               <li className="nav-item">
-                <a className={frame == 4 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => setFrame(4)} >Mes personnes blockées</a>
+                <a className={frame == 4 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => {setFrame(4);get_user_list("/users")}} >Mes personnes blockées</a>
               </li>
             </ul> 
             <br/>
@@ -192,7 +189,13 @@ const get_user_list = (path) => {
                 }
               </div>
               :
-              <div>OK</div>
+              <div className="row">
+                {users && users.map((user) => (
+                      <UserCard user={user} key={user.id} borderColorHover={getGenderColor(user.sex)}/>
+                    )
+                  )  || <div>No UsEr !</div>
+                }
+              </div>
               }
             </div>
           </div>
