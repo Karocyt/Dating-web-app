@@ -14,6 +14,12 @@ import axios from "axios";
 const UserList = () => {
   const [users, setUSers] = useState([]);
 
+
+  const [ageMin, setAgeMin] = useState(18);
+  const [ageMax, setAgeMax] = useState(100);
+  const [scoreMin, setScoreMin] = useState(0);
+  const [scoreMax, setScoreMax] = useState(100);
+  const [distanceMax, setDistanceMax] = useState(20000);
 const get_user_list = (path) => {
   axios
   .get(path)
@@ -24,6 +30,34 @@ const get_user_list = (path) => {
   })
   .catch(function (error) {
     console.log(error);
+    //alert("error_get_users");
+  });
+}
+
+const get_custom_user_list = (path) => {
+  axios
+  .get(path,
+    {
+      "age":{
+        "min": ageMin,
+        "max": ageMax
+      },
+      "score" : {
+        "min": scoreMin,
+        "max": scoreMax
+      },
+      "distance": distanceMax
+    })
+  .then((res) => {
+    //console.log("SuCcEsS:");
+    console.log(res)
+    setUSers(res.data.users);
+
+  alert("SUCCEESS")
+  })
+  .catch(function (error) {
+    console.log(error);
+    alert("ERROR")
     //alert("error_get_users");
   });
 }
@@ -52,6 +86,7 @@ const get_user_list = (path) => {
   const [frame, setFrame] = useState(0);
 
 
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -62,7 +97,7 @@ const get_user_list = (path) => {
                 <div id="menulinks" className="nav nav-pills">
                   <a style={{ width: "100%" }} className="nav-link ">
                     <i className="fa fa-home" aria-hidden="true"></i> Age min:
-                    18
+                    {ageMin}
                   </a>
                   <div className="row">
                     <div className="col-4">18</div>
@@ -72,13 +107,14 @@ const get_user_list = (path) => {
                         min="18"
                         max="100"
                         className="custom-range"
+                        value={ageMin}
+                        onChange={(e) => setAgeMin(parseInt(e.target.value))}
                       ></input>
                     </div>
-                    <div className="col-4">99</div>
+                    <div className="col-4">100</div>
                   </div>
                   <a style={{ width: "100%" }} className="nav-link ">
-                    <i className="fa fa-line-chart" aria-hidden="true"></i> Age
-                    max: 99
+                    <i className="fa fa-line-chart" aria-hidden="true"></i> Age max: {ageMax}
                   </a>
                   <div className="row">
                     <div className="col-4">18</div>
@@ -88,13 +124,15 @@ const get_user_list = (path) => {
                         min="18"
                         max="100"
                         className="custom-range"
+                        value={ageMax}
+                        onChange={(e) => setAgeMax(parseInt(e.target.value))}
                       ></input>
                     </div>
-                    <div className="col-4">99</div>
+                    <div className="col-4">100</div>
                   </div>
                   <a style={{ width: "100%" }} className="nav-link ">
                     <i className="fa fa-suitcase" aria-hidden="true"></i>{" "}
-                    Popularité min
+                    Popularité min: {scoreMin}
                   </a>
 
                   <div className="row">
@@ -105,13 +143,15 @@ const get_user_list = (path) => {
                         min="18"
                         max="100"
                         className="custom-range"
+                        value={scoreMin}
+                        onChange={(e) => setScoreMin(parseInt(e.target.value))}
                       ></input>
                     </div>
                     <div className="col-4">100</div>
                   </div>
                   <a style={{ width: "100%" }} className="nav-link ">
                     <i className="fa fa-sign-out" aria-hidden="true"></i>{" "}
-                    Popularité max
+                    Popularité max: {scoreMax}
                   </a>
 
                   <div className="row">
@@ -122,12 +162,27 @@ const get_user_list = (path) => {
                         min="18"
                         max="100"
                         className="custom-range"
+                        value={scoreMax}
+                        onChange={(e) => setScoreMax(parseInt(e.target.value))}
                       ></input>
                     </div>
                     <div className="col-4">100</div>
                   </div>
+                  <div className="row">
+                    <div className="col-5">Distance max</div>
+                    <div className="col-7"><input value={distanceMax} onChange={(e) => setDistanceMax(parseInt(e.target.value))} type="text"></input></div>
+                  </div>
+                  <br/>
+                  <div className="row">
+                    <div className="col-5">Tags</div>
+                    <div className="col-7"><input type="text"></input></div>
+                  </div>
+                  <div className="row">
 
-                <button type="button" onClick={() => {}} className="btn btn-success">Enregistrer</button>
+                  <div className="col-12">
+                    <button type="button" onClick={() => get_custom_user_list("/users")} className="btn btn-success">Enregistrer</button>
+                  </div>
+                  </div>
                 </div>
               </div>
             </div>
