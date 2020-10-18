@@ -26,6 +26,11 @@ def test_messages():
     users_list = response.json()["users"]
     assert len(users_list) == 1
 
+    response = user2["session"].post(f"{url}/new_message", json={"user": user1["id"], "content": "autre test"})
+    assert response.status_code == 201
+
+    last_message = response.json()
+
     
     response = user1["session"].post(f"{url}/messages", json={"user": user2["id"]})
     assert response.status_code == 200
@@ -33,4 +38,4 @@ def test_messages():
     assert len(messages_list) == 1
     assert messages_list[0]["content"] == test_content
 
-    
+    assert last_message["date"] == messages_list[-1]["date"] and last_message["content"] == messages_list[-1]["content"]
