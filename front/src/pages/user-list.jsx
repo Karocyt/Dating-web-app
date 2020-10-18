@@ -140,7 +140,7 @@ const get_custom_user_list = (path) => {
                     <div className="col-4">
                       <input
                         type="range"
-                        min="18"
+                        min="0"
                         max="100"
                         className="custom-range"
                         value={scoreMin}
@@ -159,7 +159,7 @@ const get_custom_user_list = (path) => {
                     <div className="col-4">
                       <input
                         type="range"
-                        min="18"
+                        min="0"
                         max="100"
                         className="custom-range"
                         value={scoreMax}

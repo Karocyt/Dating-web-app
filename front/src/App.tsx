@@ -144,6 +144,7 @@ const App: FunctionComponent = () => {
           // console.log(error.response.status);
           console.log(error);
         toast.error(error);
+        //toast.error("error");
       });
   }
 

@@ -12,7 +12,31 @@ import axios from 'axios';
 
 
 const Mailbox = () => {
-    
+    //const [users, setUSers] = useState([]);
+  
+  const get_conversations = (path) => {
+    axios
+    .get(path)
+    .then((res) => {
+      //console.log("SuCcEsS:");
+      console.log(res)
+      alert('SUCCESS')
+      //setUSers(res.data.users);
+    })
+    .catch(function (error) {
+      console.log(error);
+
+      alert('error')
+      //alert("error_get_users");
+    });
+  }
+
+  
+    useEffect(() => {
+      (async function () {
+        get_conversations("/conversations");
+      })();
+    }, []);
 
   return (
     <div className="container-fluid">
