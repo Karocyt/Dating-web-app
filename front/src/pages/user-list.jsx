@@ -19,7 +19,10 @@ const UserList = () => {
   const [ageMax, setAgeMax] = useState(100);
   const [scoreMin, setScoreMin] = useState(0);
   const [scoreMax, setScoreMax] = useState(100);
-  const [distanceMax, setDistanceMax] = useState(20000);
+  const [distanceMax, setDistanceMax] = useState(50000);
+  const [tags, setTags] = useState("");
+
+
 const get_user_list = (path) => {
   axios
   .get(path)
@@ -35,8 +38,7 @@ const get_user_list = (path) => {
 }
 
 const get_custom_user_list = (path) => {
-  axios
-  .get(path,
+  axios.post(path,
     {
       "age":{
         "min": ageMin,
@@ -46,25 +48,23 @@ const get_custom_user_list = (path) => {
         "min": scoreMin,
         "max": scoreMax
       },
-      "distance": distanceMax
+      "distance": distanceMax,
+      "tags" : tags.split(' ') == "" ? [] : tags.split(' ')
     })
   .then((res) => {
     //console.log("SuCcEsS:");
     console.log(res)
     setUSers(res.data.users);
-
-  alert("SUCCEESS")
   })
   .catch(function (error) {
     console.log(error);
-    alert("ERROR")
     //alert("error_get_users");
   });
 }
 
   useEffect(() => {
     (async function () {
-      get_user_list("/users");
+      get_custom_user_list("/users");
     })();
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(getPosition);
@@ -175,7 +175,7 @@ const get_custom_user_list = (path) => {
                   <br/>
                   <div className="row">
                     <div className="col-5">Tags</div>
-                    <div className="col-7"><input type="text"></input></div>
+                    <div className="col-7"><input value={tags} onChange={(e) => setTags(e.target.value)} type="text"></input></div>
                   </div>
                   <div className="row">
 
@@ -194,7 +194,7 @@ const get_custom_user_list = (path) => {
             <div className="card-body">
             <ul className="nav nav-tabs">
               <li className="nav-item">
-                <a className={frame == 0 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => {setFrame(0);get_user_list("/users")}}>Vue globales</a>
+                <a className={frame == 0 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => {setFrame(0);get_custom_user_list("/users")}}>Vue globales</a>
               </li>
               <li className="nav-item">
                 <a className={frame == 1 ? "nav-link active" : "nav-link"} style={{cursor: "pointer"}} onClick={() => {setFrame(1);get_user_list("/matches")}}>Mes matchs</a>
