@@ -524,5 +524,5 @@ class User():
             WHERE
                 u.id != ? 
         """
-        rows = db.fetch(query, (self.id,))
+        rows = db.fetch(query, (self.id, self.id, self.id,))
         return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
