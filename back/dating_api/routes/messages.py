@@ -21,7 +21,7 @@ def get_conversations(user):
 @user_required
 @catcher
 def get_messages(user, payload):
-    return [m.dict for m in Message.list(user.id, payload["user"])]
+    return {'messages': [m.dict for m in Message.list(user.id, payload["user"])]}
 
 @messages.route("/new_message", methods=["POST"])
 @jsonify_output
@@ -30,4 +30,4 @@ def get_messages(user, payload):
 @catcher
 def send_message(user, payload):
     msg = Message(user.id, payload["user"], payload["content"])
-    return success(msg.dict, 201)
+    return success({"message": msg.dict}, 201)

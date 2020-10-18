@@ -29,7 +29,7 @@ def test_messages():
     
     response = user1["session"].post(f"{url}/messages", json={"user": user2["id"]})
     assert response.status_code == 200
-    messages_list = response.json()
+    messages_list = response.json()["messages"]
     assert len(messages_list) == 1
     assert messages_list[0]["content"] == test_content
 
