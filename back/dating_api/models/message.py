@@ -14,7 +14,7 @@ class Message():
                 """
             db.exec(query, (from_id, to_id, content,))
             query = """
-                SELECT date from messages WHERE from_id=? AND to_id=? ORDER BY date ASC
+                SELECT date from messages WHERE from_id=? AND to_id=? ORDER BY date DESC
                 """
             values = db.fetch(query, (from_id, to_id,))
             self.date = values[0][0]
