@@ -14,11 +14,12 @@ class Message():
                 """
             db.exec(query, (from_id, to_id, content,))
             query = """
-                SELECT LAST(date) from messages WHERE from_id=?, to_id=?
+                SELECT date from messages WHERE from_id=? AND to_id=? ORDER BY date ASC
                 """
             values = db.fetch(query, (from_id, to_id,))
             self.date = values[0][0]
-        self.date = datetime.strptime(self.date, "%a, %d %b %Y %H:%M:%S GMT")
+        if type(self.date) is str:
+            self.date = datetime.strptime(self.date, "%a, %d %b %Y %H:%M:%S GMT")
 
     @staticmethod
     def list(user_id_1, user_id_2):
