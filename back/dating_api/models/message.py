@@ -31,11 +31,7 @@ class Message():
                 (from_id=? AND to_id=?)
                 OR (from_id=? AND to_id=?)
             ORDER BY
-<<<<<<< HEAD
-                date DESC
-=======
                 date ASC
->>>>>>> 4fa060d3d576dff27a7e7b1eb5d32f9c9e21048a
             """
         values = db.fetch(query, (user_id_1, user_id_2, user_id_2, user_id_1,))
         return [Message(*row) for row in values]

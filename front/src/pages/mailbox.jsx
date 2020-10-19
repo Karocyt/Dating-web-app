@@ -13,7 +13,24 @@ import axios from 'axios';
 
 const Mailbox = () => {
     //const [users, setUSers] = useState([]);
+
+    const [Matches, setMatches] = useState([]);
   
+
+const get_match = () => {
+    axios
+    .get("/matches")
+    .then((res) => {
+      //console.log("SuCcEsS:");
+      console.log(res)
+      setMatches(res.data.users);
+    })
+    .catch(function (error) {
+      console.log(error);
+      //alert("error_get_users");
+    });
+  }
+
   const get_conversations = (path) => {
     axios
     .get(path)
@@ -34,6 +51,7 @@ const Mailbox = () => {
   
     useEffect(() => {
       (async function () {
+        get_match()
         get_conversations("/conversations");
       })();
     }, []);
