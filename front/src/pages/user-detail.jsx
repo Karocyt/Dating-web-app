@@ -86,7 +86,12 @@ const UsersDetail = ({ like_management }) => {
                 <br />
                 <div className="row">
                   <div className="col-lg-3"></div>
-                  <div className="col-lg-3" style={{ textAlign: "center" }}>
+                  <div className="col-lg-2" style={{ textAlign: "center" }}>
+                    <button type="button" className="btn btn-warning">
+                      Dénoncer un abus
+                    </button>
+                  </div>
+                  <div className="col-lg-2" style={{ textAlign: "center" }}>
                     {(user[0].liked && (
                       <i
                         style={{ cursor: "pointer", color: "red" }}
@@ -111,9 +116,9 @@ const UsersDetail = ({ like_management }) => {
                       </i>
                     )}
                   </div>
-                  <div className="col-lg-3" style={{ textAlign: "center" }}>
-                    <button type="button" className="btn btn-warning">
-                      Report
+                  <div className="col-lg-2" style={{ textAlign: "center" }}>
+                    <button type="button" className="btn btn-danger">
+                      Bloquer
                     </button>
                   </div>
                   <div className="col-lg-3"></div>

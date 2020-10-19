@@ -72,6 +72,24 @@ const MyAccount = () => {
                     </div>
                   </div>
                   <br />
+                  <div className="row">
+                    <div className="col-lg-6">Diego</div>
+                    <div className="col-lg-6" style={{textAlign:"center"}}>
+                      <button type="button" className="btn btn-success">
+                        Débloquer
+                      </button>
+                    </div>
+                  </div>
+                  <br />
+                  <div className="row">
+                    <div className="col-lg-6">Madonna</div>
+                    <div className="col-lg-6" style={{textAlign:"center"}}>
+                      <button type="button" className="btn btn-success">
+                        Débloquer
+                      </button>
+                    </div>
+                  </div>
+                  <br />
                 </div>
               </div>
             </div>
