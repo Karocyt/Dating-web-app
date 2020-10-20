@@ -72,7 +72,8 @@ const User_page = ({ user, my_profile, loader, detail, get_user }) => {
                                     <div className="row">
                                         <button
                                           type="button"
-                                          onClick={() => history.push("/users")}
+                                          onClick={() => my_profile.delete_picture(picture)}
+                                          //onClick={() => my_profile.delete_picture("http://localhost:3000/profile")}
                                           className="btn btn-danger btn-block"
                                           style={{ width: "150px", margin: "auto" }}
                                         >

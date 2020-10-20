@@ -73,6 +73,25 @@ const send_picture = (picture) => {
       toast.error(error);
     });
 }
+const delete_picture = (picture) => {
+  axios({
+    method: 'delete',
+    url: picture,
+    headers: {'Content-Type': 'multipart/form-data' }
+    })
+  .then(res => {
+      console.log(res);
+      console.log(res.data);
+      toast.success("Votre nouvelle photo a été supprimé avec succés !");
+      setPictures(res.data.pictures);
+  })
+  .catch(function (error) {
+        // console.log(error.response.data);
+        // console.log(error.response.status);
+        console.log(error);
+      toast.error(error);
+    });
+}
 
   const send_modification = () => {
     setLoader(true);
@@ -102,7 +121,7 @@ const send_picture = (picture) => {
 
   return (
     <div>
-      <User_page user={[{first_name, last_name, age, bio, sex, pictures, tags}]} detail={false} my_profile={{send_picture, setFirst_name, setLast_name, setAge, setBio, setSex, setPictures, setTags, send_modification, ismodify, setIsmodify}} loader={loader} get_user={get_user}/>
+      <User_page user={[{first_name, last_name, age, bio, sex, pictures, tags}]} detail={false} my_profile={{delete_picture, send_picture, setFirst_name, setLast_name, setAge, setBio, setSex, setPictures, setTags, send_modification, ismodify, setIsmodify}} loader={loader} get_user={get_user}/>
     </div>
   );
 }
