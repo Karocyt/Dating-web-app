@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import User from '../models/user';
 
+import User_page from "./user_page"
 //import formatDate from '../helpers/format-date'
 
 import { useHistory } from 'react-router-dom'
@@ -11,174 +12,97 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import axios from 'axios';
 
 
-const MyProfile = ({send_picture}) => {
-    
-
-  const history = useHistory()
-
-
-  const [user, setUser] = useState([]);
+const MyProfile = ({toast}) => {
 
   useEffect(() => {
-    setMy_profile_loader(true)
-    axios.get('/profile')
-    .then(res => {
-        setUser(Array(res.data));
-        setMy_profile_first_name(res.data.first_name);
-        setMy_profile_last_name(res.data.last_name);
-        setMy_profile_age(parseInt(res.data.age));
-        setMy_profile_bio(res.data.bio);
-        setMy_profile_sex(res.data.sex);
-        console.log(res)
-        //alert("sucess_get_users");
-      //setIsLogged(true);
-      //setIsLoad(true);
-    })
-    .catch(function (error) {
-        console.log(error)
-        alert("error_get_users");
-      //setIsLoad(true);
-    })
-    setMy_profile_loader(false);
-
+    get_user()
 }, [])
 
-
-const [my_profile_loader, setMy_profile_loader] = useState(true);
-
-const [my_profile_first_name, setMy_profile_first_name] = useState("");
-const [my_profile_last_name, setMy_profile_last_name] = useState("");
-const [my_profile_age, setMy_profile_age] = useState(0);
-const [my_profile_bio, setMy_profile_bio] = useState("");
-const [my_profile_sex, setMy_profile_sex] = useState("");
-
-  const send_modification = () => {
-    setMy_profile_loader(true);
-    axios.put("/profile",
-    {
-      'first_name':my_profile_first_name,
-      'last_name':my_profile_last_name,
-      "age": my_profile_age,
-      "bio":my_profile_bio,
-      "sex":my_profile_sex,
-    })
-    .then((res) => {
-      setUser(Array(res.data));
-      setMy_profile_first_name(res.data.first_name);
-      setMy_profile_last_name(res.data.last_name);
-      setMy_profile_age(parseInt(res.data.age));
-      setMy_profile_bio(res.data.bio);
-      setMy_profile_sex(res.data.sex);
-      console.log(res)
-    })
-    .catch(function (error) {
-
+  const get_user = () => {
+    setLoader(true)
     axios.get('/profile')
     .then(res => {
-        setUser(Array(res.data));
-        setMy_profile_first_name(res.data.first_name);
-        setMy_profile_last_name(res.data.last_name);
-        setMy_profile_age(parseInt(res.data.age));
-        setMy_profile_bio(res.data.bio);
-        setMy_profile_sex(res.data.sex);
+        setFirst_name(res.data.first_name);
+        setLast_name(res.data.last_name);
+        setAge(parseInt(res.data.age));
+        setBio(res.data.bio);
+        setSex(res.data.sex);
+        setPictures(res.data.pictures);
+        setTags(res.data.tags);
+        setIsmodify(false);
         console.log(res)
-        //alert("sucess_get_users");
-      //setIsLogged(true);
-      //setIsLoad(true);
     })
     .catch(function (error) {
         console.log(error)
         alert("error_get_users");
-      //setIsLoad(true);
     })
+    setLoader(false);
+  }
+
+const [loader, setLoader] = useState(true);
+
+const [first_name, setFirst_name] = useState("");
+const [last_name, setLast_name] = useState("");
+const [age, setAge] = useState(0);
+const [bio, setBio] = useState("");
+const [sex, setSex] = useState("");
+const [pictures, setPictures] = useState([]);
+const [tags, setTags] = useState([]);
+const [ismodify, setIsmodify] = useState(false);
+
+
+const send_picture = (picture) => {
+  var bodyFormData = new FormData();
+  bodyFormData.append('file', picture); 
+  axios({
+    method: 'post',
+    url: '/add_picture',
+    data: bodyFormData,
+    headers: {'Content-Type': 'multipart/form-data' }
+    })
+  .then(res => {
+      console.log(res);
+      console.log(res.data);
+      toast.success("Votre nouvelle photo a été enregistré avec succés !");
+      setPictures(res.data.pictures);
+  })
+  .catch(function (error) {
+        // console.log(error.response.data);
+        // console.log(error.response.status);
+        console.log(error);
+      toast.error(error);
     });
-    setMy_profile_loader(false);
+}
+
+  const send_modification = () => {
+    setLoader(true);
+    axios.put("/profile",
+    {
+      'first_name':first_name,
+      'last_name':last_name,
+      "age": age,
+      "bio":bio,
+      "sex":sex,
+    })
+    .then((res) => {
+      setFirst_name(res.data.first_name);
+      setLast_name(res.data.last_name);
+      setAge(parseInt(res.data.age));
+      setBio(res.data.bio);
+      setSex(res.data.sex);
+      setPictures(res.data.pictures);
+      setTags(res.data.tags);
+      setIsmodify(false);
+    })
+    .catch(function (error) {
+      get_user()
+    });
+    setLoader(false);
   }
 
   return (
     <div>
-      { user[0] && !my_profile_loader ? (
-        <div className="row">
-          <div className="col s12 m8 offset-m2"> 
-            <h2 className="header center">{ user[0].first_name }</h2>
-            <div className="card hoverable"> 
-              <div className="card-image">
-                <img src={user[0].pictures[1]} alt={user[0].first_name} style={{width: '250px', margin: '0 auto'}}/>
-              </div>
-              <div className="card-stacked">
-                <div className="card-content">
-                  <table className="bordered striped">
-                    <tbody>
-                      <tr> 
-                        <td>Ajouter une photo</td> 
-                        <td>
-                          <label htmlFor="myfile">Select a file:</label>
-                          <input type="file" onChange={(e) => {console.log(e.target);alert(e.target.value);send_picture(e.target.files[0])}} id="myFile" name="myFile"/>
-                          </td> 
-                      </tr>
-                      <tr> 
-                        <td>Prénom</td> 
-                        <td><input type="text" onChange={(e) => setMy_profile_first_name(e.target.value)} value={my_profile_first_name}></input></td> 
-                      </tr>
-                      <tr> 
-                        <td>Nom</td> 
-                        <td><input type="text" onChange={(e) => setMy_profile_last_name(e.target.value)} value={my_profile_last_name}></input></td> 
-                      </tr>
-                      <tr> 
-                        <td>Age</td> 
-                        <td><input type="number" onChange={(e) => setMy_profile_age(parseInt(e.target.value))} value={my_profile_age}></input></td> 
-                      </tr>
-                      <tr> 
-                        <td>Last seens</td> 
-                        <td><strong>{ user[0].last_seen }</strong></td>
-                      </tr>
-                      <tr> 
-                        <td>Pictures[0]</td> 
-                        <td><strong>{ user[0].pictures[0] }</strong></td> 
-                      </tr>
-                      <tr> 
-                        <td>Sex</td> 
-                        <td><input type="text" onChange={(e) => setMy_profile_sex(e.target.value)} value={my_profile_sex}></input></td> 
-                      </tr>
-                      <tr> 
-                        <td>Bio</td> 
-                        <td><textarea onChange={(e) => setMy_profile_bio(e.target.value)} value={my_profile_bio}></textarea></td>
-                      </tr>
-                      {/*
-                      <tr> 
-                        <td>Points de vie</td> 
-                        <td><strong>{ user.hp }</strong></td> 
-                      </tr> 
-                      <tr> 
-                        <td>Dégâts</td> 
-                        <td><strong>{ user.cp }</strong></td> 
-                      </tr> 
-                      <tr> 
-                        <td>Types</td> 
-                        <td>
-                          {user.types.map(type => (
-                           <span key={type} className="badge badge-pill badge-secondary">{type}</span>
-                          ))}</td> 
-                          </tr> */}
-                      <tr> 
-                        <td>Date de création</td> 
-                        <td>{/*formatDate(user.created)*/}</td> 
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <button type="button" onClick={() => history.push('/users')} className="btn btn-danger">Retour</button>
-                <button type="button" onClick={() => send_modification()} className="btn btn-success">Enregistrer</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-      <div style={{lineHeight: "400px", height: "600px", textAlign: "center"}}>
-        <Loader type="Hearts" color="red" height={200} width={200} />
-        <p style={{position: "absolute", textAlign: "center", top: "150px", marginLeft: "auto", marginRight: "auto", left: "0", right: "0"}}>Chargement En cours ...</p>
-      </div>
-      )}
+      <User_page user={[{first_name, last_name, age, bio, sex, pictures, tags}]} detail={false} my_profile={{send_picture, setFirst_name, setLast_name, setAge, setBio, setSex, setPictures, setTags, send_modification, ismodify, setIsmodify}} loader={loader} get_user={get_user}/>
     </div>
   );
 }
