@@ -541,3 +541,14 @@ class User():
         rows = db.fetch(query, (self.id, self.id, self.id, self.id,))
         users = [{"user" : User.build_from_db_tuple(t[:-1]).intro_as(self), "unread": t[-1]} for t in rows]
         return {"conversations": users}
+
+    def read_messages_with(self, sender_id):
+        query = """
+            UPDATE
+                messages m
+            SET
+                unread = 0
+            WHERE
+                m.from_id=? and m.to_id=?
+        """
+        rows = db.exec(query, (sender_id, self.id,))

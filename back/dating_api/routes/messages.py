@@ -21,6 +21,7 @@ def get_conversations(user):
 @user_required
 @catcher
 def get_messages(user, payload):
+    user.read_messages_with(payload["user"])
     return {'messages': [m.dict for m in Message.list(user.id, payload["user"])]}
 
 @messages.route("/new_message", methods=["POST"])
