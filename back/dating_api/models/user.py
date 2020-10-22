@@ -519,7 +519,7 @@ class User():
         query = """
             SELECT DISTINCT
                 u.*,
-                (SELECT COUNT(unread) FROM messages INNER JOIN users ON messages.to_id = users.id WHERE users.id = ?)
+                (SELECT SUM(unread) FROM messages INNER JOIN users ON messages.to_id = users.id WHERE users.id = ?)
             FROM
                 users u
                 -- boilerplate start
@@ -539,7 +539,10 @@ class User():
                 u.id != ?
         """
         rows = db.fetch(query, (self.id, self.id, self.id, self.id,))
-        users = [{"user" : User.build_from_db_tuple(t[:-1]).intro_as(self), "unread": t[-1]} for t in rows]
+        users = [{
+                    "user" : User.build_from_db_tuple(t[:-1]).intro_as(self),
+                    "unread": int(t[-1]) if t[-1] != None else 0
+                } for t in rows]
         return {"conversations": users}
 
     def read_messages_with(self, sender_id):

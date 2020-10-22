@@ -61,6 +61,7 @@ def test_messages():
     messages_list = response.json()["messages"]
     assert len(messages_list) == 2
     assert messages_list[0]["content"] == test_content
+    assert messages_list[0]["unread"] == True
 
     # user 1 should be able to fetch 2 messages, wich should now be READ
     response = user1["session"].post(f"{url}/messages", json={"user": user2["id"]})
@@ -68,6 +69,15 @@ def test_messages():
     messages_list = response.json()["messages"]
     assert len(messages_list) == 2
     assert messages_list[0]["content"] == test_content
+    assert messages_list[0]["unread"] == False
+
+    # user1 has no unread messages anymore
+    response = user1["session"].get(f"{url}/conversations")
+    assert response.status_code == 200
+    conversations_list = response.json()["conversations"]
+    assert len(conversations_list) == 1
+    print(conversations_list)
+    assert conversations_list[0]["unread"] == 0
 
     # checking messages ordering
     assert last_message["date"] == messages_list[-1]["date"] and last_message["content"] == messages_list[-1]["content"]

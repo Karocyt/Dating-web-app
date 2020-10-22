@@ -26,7 +26,7 @@ class Message():
     def list(user_id_1, user_id_2):
         query = """
             SELECT
-                from_id, to_id, content, date, unread
+                from_id, to_id, content, unread, date
             FROM messages
             WHERE
                 (from_id=? AND to_id=?)
