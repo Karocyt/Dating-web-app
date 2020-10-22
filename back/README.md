@@ -636,28 +636,34 @@ Cookie: session=eyJfcGVybWFuZW50Ijp0cnVlLCJ1c2VyIjoxfQ.X1Uwog.BBHCto1CAuJj_9RLJ0
 HTTP/1.1 200 OK
 Content-Type: application/json
 {
-    "users":  [
+    "conversations":  [
         {
-            "blocked": false,
-            "first_name": "roger",
-            "id": 2,
-            "liked": true,
-            "matches": false,
-            "pictures": [],
-            "sex": "m",
-            "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
-            "age": 21
+            "user": {
+                "blocked": false,
+                "first_name": "roger",
+                "id": 2,
+                "liked": true,
+                "matches": false,
+                "pictures": [],
+                "sex": "m",
+                "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
+                "age": 21
+            },
+            "unread": 3,
         },
         {
-            "blocked": false,
-            "first_name": "bertrand",
-            "id": 7,
-            "liked": false,
-            "matches": false,
-            "pictures": [],
-            "sex": "m",
-            "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
-            "age": 21
+            "user": {
+                "blocked": false,
+                "first_name": "bertrand",
+                "id": 7,
+                "liked": false,
+                "matches": false,
+                "pictures": [],
+                "sex": "m",
+                "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
+                "age": 21
+            },
+        "unread": 0,
         }
     ],
 }
