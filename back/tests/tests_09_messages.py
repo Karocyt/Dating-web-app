@@ -25,6 +25,7 @@ def test_messages():
     assert response.status_code == 200
     users_list = response.json()["conversations"]
     assert len(users_list) == 1
+    assert users_list[0]["unread"] == 1
 
     response = user2["session"].post(f"{url}/new_message", json={"user": user1["id"], "content": "autre test"})
     assert response.status_code == 201
