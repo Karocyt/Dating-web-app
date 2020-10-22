@@ -318,12 +318,12 @@ class User():
     @property
     def blocked_list(self):
         query = """
-            SELECT
+            SELECT DISTINCT
                 u.*
             FROM users u
-            INNER JOIN blocks b
-                ON b.user_id=?
-            WHERE u.id != ?
+                INNER JOIN blocks b
+                    ON b.blocked=u.id
+            WHERE b.user_id = ?
             """
         rows = db.fetch(query, (self.id, self.id,))
         return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
