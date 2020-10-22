@@ -515,10 +515,11 @@ class User():
         return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
         
     @property
-    def conversations(self):
+    def conversations_json(self):
         query = """
             SELECT DISTINCT
-                u.*
+                u.*,
+                (SELECT COUNT(unread) FROM messages INNER JOIN users ON messages.to_id = users.id WHERE users.id = ?)
             FROM
                 users u
                 -- boilerplate start
@@ -537,5 +538,6 @@ class User():
             WHERE
                 u.id != ?
         """
-        rows = db.fetch(query, (self.id, self.id, self.id,))
-        return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
+        rows = db.fetch(query, (self.id, self.id, self.id, self.id,))
+        users = [{"user" : User.build_from_db_tuple(t[:-1]).intro_as(self), "unread": t[-1]} for t in rows]
+        return {"conversations": users}

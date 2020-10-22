@@ -13,7 +13,7 @@ def test_messages():
     login(user2)
     response = user1["session"].get(f"{url}/conversations")
     assert response.status_code == 200
-    users_list = response.json()["users"]
+    users_list = response.json()["conversations"]
     assert len(users_list) == 0
 
     like(user1, user2)
@@ -23,7 +23,7 @@ def test_messages():
 
     response = user1["session"].get(f"{url}/conversations")
     assert response.status_code == 200
-    users_list = response.json()["users"]
+    users_list = response.json()["conversations"]
     assert len(users_list) == 1
 
     response = user2["session"].post(f"{url}/new_message", json={"user": user1["id"], "content": "autre test"})

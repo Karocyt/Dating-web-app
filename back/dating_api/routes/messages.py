@@ -13,7 +13,7 @@ messages = Blueprint("messages", __name__)
 @jsonify_output
 @user_required
 def get_conversations(user):
-    return {"users": user.conversations}
+    return user.conversations_json
 
 @messages.route("/messages", methods=["POST"])
 @jsonify_output
