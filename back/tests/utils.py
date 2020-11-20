@@ -20,7 +20,9 @@ def login(users):
         payload = {
             'email': u["email"],
             'password': u["password"],
-            'remember_me': True
+            'remember_me': True,
+            "lat": u["lat"],
+            "lon": u["lon"]
         }
         response = u["session"].post(f"{url}/login", data=payload)
     # print(response)
@@ -43,6 +45,7 @@ def reset(users, picture=True):
 
 def create(user, checks=True, picture=False):
     response = signup(user)
+    print(response)
     if checks:
         assert response.status_code == 201
     data = response.json()
