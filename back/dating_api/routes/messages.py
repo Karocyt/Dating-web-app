@@ -31,5 +31,7 @@ def get_messages(user, payload):
 @user_required
 @catcher
 def send_message(user, payload):
+    if payload["content"] is "":
+        return error("Message vide", 400)
     msg = Message(user.id, payload["user"], payload["content"])
     return success({"message": msg.dict}, 201)
