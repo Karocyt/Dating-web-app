@@ -20,12 +20,11 @@ def test_messages():
     #   Check 403 on new_message before/between likes 
 
     # mutual like to allow messages
-    print(like(user1, user2))
-    print(like(user2, user1))
+    like(user1, user2)
+    like(user2, user1)
 
     # user2 send to user1
     response = user2["session"].post(f"{url}/new_message", json={"user": user1["id"], "content": test_content})
-    print(response.json())
     assert response.status_code == 201
 
     # user 1 get 1 conversation with one unread message
