@@ -33,5 +33,8 @@ def get_messages(user, payload):
 def send_message(user, payload):
     if payload["content"] is "":
         return error("Message vide", 400)
+    dest = User.get_user(user_id=payload["user"])
+    if dest is None or not user.matches_with(dest):
+        return error("Tu n'as pas matché avec cet utilisateur")
     msg = Message(user.id, payload["user"], payload["content"])
     return success({"message": msg.dict}, 201)
