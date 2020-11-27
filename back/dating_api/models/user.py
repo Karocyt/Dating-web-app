@@ -424,7 +424,7 @@ class User():
         # print(params, [t.name for t in tags])
         db.exec(query, params)
 
-    def search(self, payload):
+    def search(self, payload=None):
         age_min = 18
         age_max = 99
         score_min = 0
@@ -544,5 +544,5 @@ class User():
     #     return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
 
     def suggested(self):
-        return self.search({})
+        return self.search()
 
