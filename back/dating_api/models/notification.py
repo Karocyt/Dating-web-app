@@ -13,7 +13,6 @@ class Notification():
         self.date = date
         self.unread = True if unread_status == 1 else False
         if not self.date:
-            print("\n\n\n\ntest\n\n\n", flush=True)
             query = """
                 INSERT INTO notifications SET from_id=?, user_id=?, type=?
                 """
