@@ -16,8 +16,10 @@ def test_messages():
     users_list = response.json()["conversations"]
     assert len(users_list) == 0
 
-    # MISSING TEST (match required not implemented yet):
-    #   Check 403 on new_message before/between likes 
+    # user2 send to user1 before like
+    response = user2["session"].post(f"{url}/new_message", json={"user": user1["id"], "content": test_content})
+    print(response.status_code)
+    assert response.status_code == 403
 
     # mutual like to allow messages
     like(user1, user2)
