@@ -24,8 +24,19 @@ def test_notifications():
     response = user1["session"].get(f"{url}/notifications")
     notifs_list = response.json()["notifications"]
     print(response.json())
-    assert len(notifs_list) == 1
+    assert len(notifs_list) == 2
+    assert notifs_list[0]["type"] == "message"
+    assert notifs_list[1]["type"] == "match"
 
+    user2_id = user2["session"].get(f"{url}/profile").json()['id']
+    profile = user1["session"].get(f"{url}/users/{user2_id}")
+    response = user2["session"].get(f"{url}/notifications")
+    notifs_list = response.json()["notifications"]
+    print(response.json())
+    assert len(notifs_list) == 2
+    assert notifs_list[0]["type"] == "visit"
+    assert notifs_list[1]["type"] == "like"
+    
     # # user 1 get 1 conversation with one unread message
     # response = user1["session"].get(f"{url}/conversations")
     # assert response.status_code == 200

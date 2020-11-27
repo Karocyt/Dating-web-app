@@ -22,7 +22,7 @@ def get_conversations(user):
 @catcher
 def get_messages(user, payload):
     res = {'messages': [m.dict for m in Message.list(user.id, payload["user"])]}
-    user.read_messages_with(payload["user"])
+    Message.read_messages_with(user.id, payload["user"])
     return res
 
 @messages.route("/new_message", methods=["POST"])

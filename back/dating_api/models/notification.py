@@ -31,6 +31,18 @@ class Notification():
         notif = Notification(user_id, from_id, notification_type)
         
     @staticmethod
+    def read(user_id_1):
+        query = """
+            UPDATE
+                notifications n
+            SET
+                unread = 0
+            WHERE
+                n.user_id=?
+        """
+        rows = db.exec(query, (user_id_1,))
+        
+    @staticmethod
     def list(user_id_1):
         query = """
             SELECT

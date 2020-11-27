@@ -14,3 +14,10 @@ notifications = Blueprint("notifications", __name__)
 @user_required
 def get_notifications(user):
     return {"notifications": [x.dict for x in Notification.list(user.id)]}
+
+@notifications.route("/notifications", methods=["PUT"])
+@jsonify_output
+@user_required
+def read_notifications(user):
+    Notification.read(user.id)
+    return success()

@@ -48,3 +48,15 @@ class Message():
             'content': self.content,
             'unread': self.unread,
         }
+
+    @staticmethod
+    def read_messages_with(user_id, sender_id):
+        query = """
+            UPDATE
+                messages m
+            SET
+                unread = 0
+            WHERE
+                m.from_id=? and m.to_id=?
+        """
+        rows = db.exec(query, (sender_id, user_id,))
