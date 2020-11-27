@@ -26,6 +26,7 @@ def test_notifications():
     assert len(notifs_list) == 2
     assert notifs_list[0]["type"] == "message"
     assert notifs_list[1]["type"] == "match"
+    assert response.json()["unread"] == 2
     assert notifs_list[0]["unread"] == True
     assert notifs_list[1]["unread"] == True
 
@@ -34,6 +35,7 @@ def test_notifications():
     response = user1["session"].get(f"{url}/notifications")
     notifs_list = response.json()["notifications"]
     assert len(notifs_list) == 2
+    assert response.json()["unread"] == 0
     assert notifs_list[0]["unread"] == False
     assert notifs_list[1]["unread"] == False
 

@@ -13,7 +13,9 @@ notifications = Blueprint("notifications", __name__)
 @jsonify_output
 @user_required
 def get_notifications(user):
-    return {"notifications": [x.dict for x in Notification.list(user.id)]}
+    notifs_list = Notification.list(user.id)
+    unread_count = sum(1 if x.unread else 0 for x in notifs_list)
+    return {"notifications": [x.dict for x in notifs_list], "unread": unread_count}
 
 @notifications.route("/notifications", methods=["PUT"])
 @jsonify_output

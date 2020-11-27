@@ -52,7 +52,7 @@ class Notification():
                 user_id=?
             ORDER BY
                 date DESC
-            LIMIT 10
+            LIMIT 100
             """
         values = db.fetch(query, (user_id_1,))
         return [Notification(*row) for row in values]
