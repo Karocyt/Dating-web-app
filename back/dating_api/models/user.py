@@ -16,31 +16,6 @@ class User():
     __restricted_fields__ = ("id", "validated", "views_count", "likes_count", "last_seen")
     __private_fields__ = ("last_seen", "banned")
 
-    def list_users(self):
-        query = """
-            SELECT
-                *
-            FROM
-                users
-                LEFT OUTER JOIN (likes a
-                    INNER JOIN likes b
-                        ON a.user_id = b.liked
-                        AND a.liked = b.user_id
-                        AND b.user_id=?)
-                    ON users.id = a.user_id
-                LEFT OUTER JOIN blocks
-                    ON users.id = blocks.user_id
-                    AND blocks.blocked=?
-            WHERE
-                blocks.user_id IS NULL
-                AND b.user_id IS NULL
-                AND users.validated=1
-                AND users.id != ?
-            """
-        rows = db.fetch(query, (self.id, self.id, self.id))
-
-        return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
-
     @staticmethod
     def build_from_db_tuple(values):
         values = zip(User.__fields__, values)
@@ -543,28 +518,31 @@ class User():
                 } for t in rows]
         return {"conversations": users}
 
-    def suggested(self):
-        query = """
-            SELECT
-                *
-            FROM
-                users
-                LEFT OUTER JOIN (likes a
-                    INNER JOIN likes b
-                        ON a.user_id = b.liked
-                        AND a.liked = b.user_id
-                        AND b.user_id=?)
-                    ON users.id = a.user_id
-                LEFT OUTER JOIN blocks
-                    ON users.id = blocks.user_id
-                    AND blocks.blocked=?
-            WHERE
-                blocks.user_id IS NULL
-                AND b.user_id IS NULL
-                AND users.validated=1
-                AND users.id != ?
-            """
-        rows = db.fetch(query, (self.id, self.id, self.id))
+    # def list_users(self):
+    #     query = """
+    #         SELECT
+    #             *
+    #         FROM
+    #             users
+    #             LEFT OUTER JOIN (likes a
+    #                 INNER JOIN likes b
+    #                     ON a.user_id = b.liked
+    #                     AND a.liked = b.user_id
+    #                     AND b.user_id=?)
+    #                 ON users.id = a.user_id
+    #             LEFT OUTER JOIN blocks
+    #                 ON users.id = blocks.user_id
+    #                 AND blocks.blocked=?
+    #         WHERE
+    #             blocks.user_id IS NULL
+    #             AND b.user_id IS NULL
+    #             AND users.validated=1
+    #             AND users.id != ?
+    #         """
+    #     rows = db.fetch(query, (self.id, self.id, self.id))
 
-        return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
-        
+    #     return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
+
+    def suggested(self):
+        return self.search({})
+
