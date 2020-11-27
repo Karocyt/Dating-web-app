@@ -28,6 +28,11 @@ def test_liked_by():
     print(response, response.text)
     assert response.status_code == 200
     assert len(response.json()["users"]) == 1
+
+    response = user2["session"].get(f"{url}/suggested")
+    print(response, response.text)
+    assert response.status_code == 200
+    assert len(response.json()["users"]) > 1
     
     unlike(user1, user2)
     unlike(user2, user1)

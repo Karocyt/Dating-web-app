@@ -297,19 +297,6 @@ class User():
         rows = db.fetch(query, (self.id,))
         return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
     
-    # @property
-    # def liked_list(self):
-    #     query = """
-    #         SELECT
-    #             *
-    #         FROM users
-    #         INNER JOIN likes
-    #         ON users.id = likes.user_id
-    #             AND likes.liked = ?
-    #         """
-    #     rows = db.fetch(query, (self.id,))
-    #     return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
-    
     @property
     def visits_list(self):
         query = """
@@ -556,3 +543,28 @@ class User():
                 } for t in rows]
         return {"conversations": users}
 
+    def suggested(self):
+        query = """
+            SELECT
+                *
+            FROM
+                users
+                LEFT OUTER JOIN (likes a
+                    INNER JOIN likes b
+                        ON a.user_id = b.liked
+                        AND a.liked = b.user_id
+                        AND b.user_id=?)
+                    ON users.id = a.user_id
+                LEFT OUTER JOIN blocks
+                    ON users.id = blocks.user_id
+                    AND blocks.blocked=?
+            WHERE
+                blocks.user_id IS NULL
+                AND b.user_id IS NULL
+                AND users.validated=1
+                AND users.id != ?
+            """
+        rows = db.fetch(query, (self.id, self.id, self.id))
+
+        return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
+        
