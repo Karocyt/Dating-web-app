@@ -64,6 +64,7 @@ def test_messages():
     assert len(messages_list) == 2
     assert messages_list[0]["content"] == test_content
     assert messages_list[0]["unread"] == True
+    assert response.json()["unread"] > 0
 
     # user 1 should be able to fetch 2 messages, wich should now be READ
     response = user1["session"].post(f"{url}/messages", json={"user": user2["id"]})
@@ -72,6 +73,7 @@ def test_messages():
     assert len(messages_list) == 2
     assert messages_list[0]["content"] == test_content
     assert messages_list[0]["unread"] == False
+    assert response.json()["unread"] == 0
 
     # user1 has no unread messages anymore
     response = user1["session"].get(f"{url}/conversations")

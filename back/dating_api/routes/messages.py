@@ -21,7 +21,9 @@ def get_conversations(user):
 @user_required
 @catcher
 def get_messages(user, payload):
-    res = {'messages': [m.dict for m in Message.list(user.id, payload["user"])]}
+    messages = Message.list(user.id, payload["user"])
+    unread = sum(1 if m.unread else 0 for m in messages)
+    res = {'messages': [m.dict for m in messages], "unread": unread}
     Message.read_messages_with(user.id, payload["user"])
     return res
 

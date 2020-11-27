@@ -14,6 +14,7 @@ This API uses `POST` request to communicate and HTTP [response codes](https://en
 201: Ressource created
 400: Bad request
 401: Unauthorized
+403: Forbidden
 404: Cannot be found
 405: Method not allowed 
 418: I'm a teapot
@@ -81,7 +82,9 @@ Content-Type: application/json
 {
     "email": "foo@bar.fr",
     "password": "1234567",
-    "remember_me: true 
+    "remember_me": true,
+    "lat": 14.51,
+    "lon": 42.101
 }
 ```
 **Successful Response:**
@@ -704,6 +707,7 @@ Content-Type: application/json
             "unread": false,
         },
     ],
+    "uread": 1
 }
 ```
 
