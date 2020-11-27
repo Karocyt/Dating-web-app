@@ -13,6 +13,7 @@ class Notification():
         self.date = date
         self.unread = True if unread_status == 1 else False
         if not self.date:
+            print("\n\n\n\ntest\n\n\n", flush=True)
             query = """
                 INSERT INTO notifications SET from_id=?, user_id=?, type=?
                 """
@@ -26,7 +27,7 @@ class Notification():
             self.date = datetime.strptime(self.date, "%a, %d %b %Y %H:%M:%S GMT")
 
     @staticmethod
-    def emit(self, user_id, from_id, notification_type):
+    def emit(user_id, from_id, notification_type):
         notif = Notification(user_id, from_id, notification_type)
         
     @staticmethod
@@ -49,6 +50,6 @@ class Notification():
         return {
             'from': User.get_user(user_id=self.from_id).intro_as(User.get_user(user_id=self.user_id)),
             'date': self.date,
-            'type': self.content,
+            'type': self.type,
             'unread': self.unread,
         }

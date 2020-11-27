@@ -5,22 +5,26 @@ from .utils import (signup, login, validate, create, update, delete,
                     report, reset)
 
 def test_notifications():
+    reset(user1)
+    reset(user2)
+
     # Check conversations list empty at start
     response = user1["session"].get(f"{url}/notifications")
     assert response.status_code == 200
     notifs_list = response.json()["notifications"]
     assert len(notifs_list) == 0
 
-    # # MISSING TEST (match required not implemented yet):
-    # #   Check 403 on new_message before/between likes 
+    # mutual like to allow messages
+    like(user1, user2)
+    like(user2, user1)
 
-    # # mutual like to allow messages
-    # like(user1, user2)
-    # like(user2, user1)
-
-    # # user2 send to user1
-    # response = user2["session"].post(f"{url}/new_message", json={"user": user1["id"], "content": test_content})
-    # assert response.status_code == 201
+    # user2 send to user1
+    response = user2["session"].post(f"{url}/new_message", json={"user": user1["id"], "content": "pcachin"})
+    assert response.status_code == 201
+    response = user1["session"].get(f"{url}/notifications")
+    notifs_list = response.json()["notifications"]
+    print(response.json())
+    assert len(notifs_list) == 1
 
     # # user 1 get 1 conversation with one unread message
     # response = user1["session"].get(f"{url}/conversations")
