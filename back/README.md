@@ -741,5 +741,63 @@ Content-Type: application/json
 }
 ```
 
+## Get notifications
+
+**You send:**  Your `session` cookie
+**You get:** A JSON encoded list of notifications
+
+**Request:**
+```json
+GET /notifications HTTP/1.1
+Cookie: session=eyJfcGVybWFuZW50Ijp0cnVlLCJ1c2VyIjoxfQ.X1Uwog.BBHCto1CAuJj_9RLJ0g5kPHgtbU
+Content-Type: application/json
+```
+**Successful Response:**
+```json
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    "notifications":  [
+        {
+            "from": {
+                "blocked": false,
+                "first_name": "bertrand",
+                "id": 7,
+                "liked": false,
+                "matches": false,
+                "pictures": [],
+                "sex": "m",
+                "last_seen": "Tue, 29 Sep 2020 00:00:00 GMT",
+                "age": 21
+            },
+            "type": "visit",
+            "date": "Tue, 29 Sep 2000 00:00:00 GMT",
+            "unread": true,
+        }
+    ],
+    "uread": 1
+}
+```
+
+## Read notifications
+
+**You send:**  Your `session` cookie
+**You get:** A success code. Your notifications will now be read
+
+**Request:**
+```json
+PUT /notifications HTTP/1.1
+Cookie: session=eyJfcGVybWFuZW50Ijp0cnVlLCJ1c2VyIjoxfQ.X1Uwog.BBHCto1CAuJj_9RLJ0g5kPHgtbU
+Content-Type: application/json
+```
+**Successful Response:**
+```json
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+    "pcachin": "true",
+}
+```
+
 ## Author
 * **Kevin Azoulay** @ 42 Lyon
