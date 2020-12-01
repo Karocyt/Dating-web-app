@@ -70,4 +70,4 @@ def get_suggested(user):
     """
     List suggested users as an array of full json encoded profiles
     """
-    return {"users": user.suggested()}
+    return {"users": user.suggested}
