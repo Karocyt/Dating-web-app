@@ -635,8 +635,8 @@ class User():
 
         users = [User.build_from_db_tuple(t) for t in rows]
 
-        # group by (matching_tags_count * 10 + popularity)
-        users.sort(key= lambda u: len(set(self.tags_list)&set(u.tags_list)) * 10 + u.score)
+        # sort by (matching_tags_count * 10 + popularity)
+        users.sort(key= lambda u: len(set(self.tags_list)&set(u.tags_list)) * 10 + u.score).reverse()
 
         # return 20 firsts
         return [u.intro_as(self) for u in users]
