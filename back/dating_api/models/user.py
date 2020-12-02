@@ -633,14 +633,11 @@ class User():
                                 score_min, score_max, *tags, *sexs, *orientations,
                                 self.lat, self.lon))
 
-        users = [User.build_from_db_tuple(t).intro_as(self) for t in rows]
+        users = [User.build_from_db_tuple(t) for t in rows]
 
-        # group by matching tags count
+        # group by (matching_tags_count * 10 + popularity)
+        users.sort(key= lambda u: len(set(self.tags_list)&set(u.tags_list)) * 10 + u.score)
 
-        # sort by popularity
-
-        # concatenate
-
-        
-        return users
+        # return 20 firsts
+        return [u.intro_as(self) for u in users]
 
