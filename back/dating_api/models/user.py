@@ -339,6 +339,7 @@ class User():
     def public_as(self, user):
         d = self.public
         d["liked"] = user.liked(self)
+        d["liked_by"] = self.liked(user)
         d["matches"] = user.matches_with(self)
         d["blocked"] = self.id in user.blocklist 
         return d
@@ -346,6 +347,7 @@ class User():
     def intro_as(self, user):
         d = self.intro
         d["liked"] = user.liked(self)
+        d["liked_by"] = self.liked(user)
         d["matches"] = user.matches_with(self)
         d["blocked"] = self.id in user.blocklist 
         return d
@@ -519,7 +521,6 @@ class User():
                 } for t in rows]
         return {"conversations": users}
 
-    @property
     def suggested(self, payload=None):
         """
         SQL:
@@ -640,4 +641,3 @@ class User():
 
         # return 20 firsts
         return [u.intro_as(self) for u in users]
-
