@@ -598,16 +598,18 @@ class User():
 
         end_query = """
             ORDER BY
-                CAST(st_distance(POINT(u.lat, u.lon), POINT(?, ?))) AS INTEGER ASC
+                (st_distance(POINT(u.lat, u.lon), POINT(?, ?)) * 111) ASC
             LIMIT 100
-            ORDER BY
-                u.likes_count / (
-                    0.5 * (u.views_count + 1 + ABS(u.views_count - 1))
-                )
         """
+        # Broken last ORDER_BY, idk why...
+        #     ORDER BY
+        #         u.likes_count / (
+        #             0.5 * ( u.views_count + 1 + ABS(u.views_count - 1) )
+        #         )
+        # """
 
 
-        query = base_query + tags_query + specifics# + end_query
+        query = base_query + tags_query + specifics + end_query
         rows = db.fetch(query, (self.id, self.id, self.id, self.id, age_min, age_max, self.lat, self.lon, distance_max, score_min, score_max, *tags, self.lat, self.lon))
 
         return [User.build_from_db_tuple(t).intro_as(self) for t in rows]

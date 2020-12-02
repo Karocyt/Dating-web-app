@@ -53,6 +53,8 @@ class Orientations():
             target_sex = Sexs.same(sex)
         elif Orientations.available[orientation]["target_sex"] == Orientations.TargetSex.OPPOSITE:
             target_sex = Sexs.opposite(sex)
+        elif Orientations.available[orientation]["target_sex"] == Orientations.TargetSex.ALL:
+            target_sex = Sexs.available.keys
 
         target_orientation = None
         if Orientations.available[orientation]["target_orientation"] == Orientations.TargetOrientation.HETERO:
