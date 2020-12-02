@@ -620,12 +620,6 @@ class User():
                 (st_distance(POINT(u.lat, u.lon), POINT(?, ?)) * 111) ASC
             LIMIT 100
         """
-        # Broken last ORDER_BY, idk why...
-        #     ORDER BY
-        #         u.likes_count / (
-        #             0.5 * ( u.views_count + 1 + ABS(u.views_count - 1) )
-        #         )
-        # """
 
 
         query = base_query + tags_query + sexs_query + orientations_query + end_query
@@ -640,4 +634,4 @@ class User():
         users.sort(key= lambda u: len(set(self.tags_list)&set(u.tags_list)) * 10 + u.score, reverse = True)
 
         # return 20 firsts
-        return [u.intro_as(self) for u in users]
+        return [u.intro_as(self) for u in users[:max(20, len(users))]]
