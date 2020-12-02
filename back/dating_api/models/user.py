@@ -635,5 +635,12 @@ class User():
 
         users = [User.build_from_db_tuple(t).intro_as(self) for t in rows]
 
+        # group by matching tags count
+
+        # sort by popularity
+
+        # concatenate
+
+        
         return users
 
