@@ -519,86 +519,96 @@ class User():
                 } for t in rows]
         return {"conversations": users}
 
-    # def list_users(self):
-    #     query = """
-    #         SELECT
-    #             *
-    #         FROM
-    #             users
-    #             LEFT OUTER JOIN (likes a
-    #                 INNER JOIN likes b
-    #                     ON a.user_id = b.liked
-    #                     AND a.liked = b.user_id
-    #                     AND b.user_id=?)
-    #                 ON users.id = a.user_id
-    #             LEFT OUTER JOIN blocks
-    #                 ON users.id = blocks.user_id
-    #                 AND blocks.blocked=?
-    #         WHERE
-    #             blocks.user_id IS NULL
-    #             AND b.user_id IS NULL
-    #             AND users.validated=1
-    #             AND users.id != ?
-    #         """
-    #     rows = db.fetch(query, (self.id, self.id, self.id))
-
-    #     return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
-
     @property
-    def suggested(self):
-        return self.search()
-        # everything = 0
-        # opposite = -1
+    def suggested(self, payload=None):
+        """
+        SQL:
+            Select unblocked, unliked, who didn't blocked me neither, with good sex and orientation
+            Sort by dist
+            Keep x first
+            Sort by popularity
+        Manually:
+            Compute a match score, adding tags to the equation
+            Sort by score
+            return 20 first
+        """
+        
+        age_min = 18
+        age_max = 99
+        score_min = 0
+        score_max = 100
+        distance_max = 50000 # km
+        tags = []
+        if type(payload) is dict:
+            if "age" in payload:
+                age_min = payload["age"]["min"]
+                age_max = payload["age"]["max"]
+            if "score" in payload:
+                score_min = payload["score"]["min"] / 100.0
+                score_max = payload["score"]["max"] / 100.0
+            if "distance" in payload:
+                distance_max = payload["distance"]
+            if "tags" in payload:
+                tags = payload["tags"]
 
-        # target_sex = 0
-        # target_orientation = self.orientation
-        # if self.orientation != "bisexual":
-        #     if self.orientation == "heterosexual":
-        #         target_sex = opposite
-        #     else:
-        #         target_sex = self.sex
+        base_query = """
+            SELECT DISTINCT
+                u.*
+            FROM
+                users u
+                LEFT OUTER JOIN (likes a
+                    INNER JOIN likes b
+                        ON a.user_id = b.liked
+                        AND a.liked = b.user_id
+                        AND b.user_id=?)
+                    ON u.id = a.user_id
+                LEFT OUTER JOIN blocks
+                    ON (u.id = blocks.user_id AND blocks.blocked=?)
+                        OR (u.id = blocks.blocked AND blocks.user_id=?)
+                LEFT JOIN user_tags ut
+                    ON ut.user_id = u.id
+                LEFT JOIN tags t
+                    ON t.id = ut.tag_id
+            WHERE
+                blocks.user_id IS NULL
+                AND b.user_id IS NULL
+                AND u.validated=1
+                AND u.id != ?
+                AND u.age >= ?
+                AND u.age <= ?
+                AND u.validated=1
+                AND st_distance(POINT(u.lat, u.lon), POINT(?, ?)) * 111 <= ?
+                AND u.likes_count / (0.5 * ((u.views_count + 1) + ABS(u.views_count - 1))) >= ?
+                AND u.likes_count / (0.5 * ((u.views_count + 1) + ABS(u.views_count - 1))) <= ?
+            """
 
-        # query = """
-        #     SELECT DISTINCT
-        #         u.*
-        #     FROM
-        #         users u
-        #         LEFT OUTER JOIN (likes a
-        #             INNER JOIN likes b
-        #                 ON a.user_id = b.liked
-        #                 AND a.liked = b.user_id
-        #                 AND b.user_id=?)
-        #             ON u.id = a.user_id
-        #         LEFT OUTER JOIN blocks
-        #             ON (u.id = blocks.user_id AND blocks.blocked=?)
-        #                 OR (u.id = blocks.blocked AND blocks.user_id=?)
-        #         LEFT JOIN user_tags ut
-        #             ON ut.user_id = u.id
-        #         LEFT JOIN tags t
-        #             ON t.id = ut.tag_id
-        #     WHERE
-        #         blocks.user_id IS NULL
-        #         AND b.user_id IS NULL
-        #         AND u.validated=1
-        #         AND u.id != ?
-        #         AND u.age >= ?
-        #         AND u.age <= ?
-        #         AND u.validated=1
-        #         AND st_distance(POINT(u.lat, u.lon), POINT(?, ?)) * 111 <= ?
-        #         AND u.likes_count / (0.5 * ((u.views_count + 1) + ABS(u.views_count - 1))) >= ?
-        #         AND u.likes_count / (0.5 * ((u.views_count + 1) + ABS(u.views_count - 1))) <= ?
-        #     """
-        # if len(tags) > 0:
-        #     tags_query = []
-        #     junc = " "
-        #     for t in tags:
-        #         tags_query.append("t.name=?")
-        #     if len(tags) > 1:
-        #         junc = " OR "
-        #     query += " AND (" + junc.join(tags_query) + ")"
+        tags_query = ""
+        if len(tags) > 0:
+            tags_query = []
+            junc = " "
+            for t in tags:
+                tags_query.append("t.name=?")
+            if len(tags) > 1:
+                junc = " OR "
+            tags_query = " AND (" + junc.join(tags_query) + ")"
+
+        target = Orientations.target(self.sex, self.orientation)
+        specifics = ""
+        specifics_args = []
+
+        end_query = """
+            ORDER BY
+                st_distance(POINT(u.lat, u.lon), POINT(?, ?)) ASC
+            LIMIT 100
+            ORDER BY
+                u.likes_count / (
+                    0.5 * (u.views_count + 1 + ABS(u.views_count - 1))
+                )
+        """
 
 
-        # rows = db.fetch(query, (self.id, self.id, self.id, self.id, age_min, age_max, self.lat, self.lon, distance_max, score_min, score_max, *tags))
+        query = base_query + tags_query + specifics# + end_query
+        rows = db.fetch(query, (self.id, self.id, self.id, self.id, age_min, age_max, self.lat, self.lon, distance_max, score_min, score_max, *tags))#, self.lat, self.lon))
 
-        # return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
+        return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
 
