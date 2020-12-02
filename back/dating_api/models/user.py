@@ -598,7 +598,7 @@ class User():
 
         end_query = """
             ORDER BY
-                st_distance(POINT(u.lat, u.lon), POINT(?, ?)) ASC
+                CAST(st_distance(POINT(u.lat, u.lon), POINT(?, ?))) AS INTEGER ASC
             LIMIT 100
             ORDER BY
                 u.likes_count / (
@@ -608,7 +608,7 @@ class User():
 
 
         query = base_query + tags_query + specifics# + end_query
-        rows = db.fetch(query, (self.id, self.id, self.id, self.id, age_min, age_max, self.lat, self.lon, distance_max, score_min, score_max, *tags))#, self.lat, self.lon))
+        rows = db.fetch(query, (self.id, self.id, self.id, self.id, age_min, age_max, self.lat, self.lon, distance_max, score_min, score_max, *tags, self.lat, self.lon))
 
         return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
 
