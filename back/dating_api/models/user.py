@@ -610,7 +610,12 @@ class User():
 
 
         query = base_query + tags_query + specifics + end_query
-        rows = db.fetch(query, (self.id, self.id, self.id, self.id, age_min, age_max, self.lat, self.lon, distance_max, score_min, score_max, *tags, self.lat, self.lon))
+        rows = db.fetch(query, (self.id, self.id, self.id, self.id, age_min,
+                                age_max, self.lat, self.lon, distance_max,
+                                score_min, score_max, *tags, *specifics_args,
+                                self.lat, self.lon))
 
-        return [User.build_from_db_tuple(t).intro_as(self) for t in rows]
+        users = [User.build_from_db_tuple(t).intro_as(self) for t in rows]
+
+        return users
 
