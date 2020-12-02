@@ -593,8 +593,26 @@ class User():
             tags_query = " AND (" + junc.join(tags_query) + ")"
 
         target = Orientations.target(self.sex, self.orientation)
-        specifics = ""
-        specifics_args = []
+        sexs = target["sexs"]
+        print(sexs, flush=True)
+        sexs_query = []
+        junc = " "
+        for s in sexs:
+            sexs_query.append("u.sex=?")
+        if len(sexs) > 1:
+            junc = " OR "
+        sexs_query = " AND (" + junc.join(sexs_query) + ")"
+
+        orientations = target["orientations"]
+        orientations_query = ""
+        orientations_query = []
+        junc = " "
+        for t in orientations:
+            orientations_query.append("u.orientation=?")
+        if len(orientations) > 1:
+            junc = " OR "
+        orientations_query = " AND (" + junc.join(orientations_query) + ")"
+        
 
         end_query = """
             ORDER BY
@@ -609,10 +627,10 @@ class User():
         # """
 
 
-        query = base_query + tags_query + specifics + end_query
+        query = base_query + tags_query + sexs_query + orientations_query + end_query
         rows = db.fetch(query, (self.id, self.id, self.id, self.id, age_min,
                                 age_max, self.lat, self.lon, distance_max,
-                                score_min, score_max, *tags, *specifics_args,
+                                score_min, score_max, *tags, *sexs, *orientations,
                                 self.lat, self.lon))
 
         users = [User.build_from_db_tuple(t).intro_as(self) for t in rows]

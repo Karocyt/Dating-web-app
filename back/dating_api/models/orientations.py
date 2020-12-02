@@ -44,7 +44,7 @@ class Orientations():
     
     @staticmethod
     def get():
-        return Orientations.available.keys
+        return Orientations.available.keys()
 
     @staticmethod
     def target(sex, orientation):
@@ -54,16 +54,16 @@ class Orientations():
         elif Orientations.available[orientation]["target_sex"] == Orientations.TargetSex.OPPOSITE:
             target_sex = Sexs.opposite(sex)
         elif Orientations.available[orientation]["target_sex"] == Orientations.TargetSex.ALL:
-            target_sex = Sexs.available.keys
+            target_sex = Sexs.get()
 
         target_orientation = None
         if Orientations.available[orientation]["target_orientation"] == Orientations.TargetOrientation.HETERO:
-            target_orientation = [Orientations.available.keys[0]]
+            target_orientation = [Orientations.get()[0]]
         elif Orientations.available[orientation]["target_orientation"] == Orientations.TargetOrientation.HOMO:
-            target_orientation = [Orientations.available.keys[1]]
+            target_orientation = [Orientations.get()[1]]
         elif Orientations.available[orientation]["target_orientation"] == Orientations.TargetOrientation.ALL:
-            target_orientation = Orientations.available.keys
+            target_orientation = Orientations.get()
         else:
-            target_orientation = [Orientations.available.keys[-1]]
+            target_orientation = [Orientations.get()[-1]]
 
         return {"sexs": target_sex, "orientations": target_orientation}
