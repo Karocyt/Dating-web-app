@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask_socketio import send, emit
 
-from .. import db
+from .. import db, socketio
 from .user import User
 
 class Notification():
@@ -28,9 +28,9 @@ class Notification():
             self.date = datetime.strptime(self.date, "%a, %d %b %Y %H:%M:%S GMT")
 
     @staticmethod
-    def emit(user_id, from_id, notification_type):
+    def emit_notification(user_id, from_id, notification_type, room):
         notif = Notification(user_id, from_id, notification_type)
-        emit(notif.dict, room=request.sid)
+        socketio.emit(notif.dict, room=room)
         
     @staticmethod
     def read(user_id_1):
