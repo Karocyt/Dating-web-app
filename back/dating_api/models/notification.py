@@ -1,5 +1,7 @@
-from flask import jsonify
+from flask import jsonify, request
 from datetime import datetime
+
+from flask_socketio import send, emit
 
 from .. import db
 from .user import User
@@ -28,6 +30,7 @@ class Notification():
     @staticmethod
     def emit(user_id, from_id, notification_type):
         notif = Notification(user_id, from_id, notification_type)
+        emit(notif.dict, room=request.sid)
         
     @staticmethod
     def read(user_id_1):

@@ -49,7 +49,7 @@ def logout():
 @user_crud.route("/signup", methods=["POST"])
 @jsonify_output
 @payload_required
-@catcher
+# @catcher
 def signup(payload):
     """
     Register a new user.
